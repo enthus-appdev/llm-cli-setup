@@ -111,6 +111,18 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 | Claude Code | `~/.claude/CLAUDE.md` |
 | OpenAI Codex | `~/.codex/AGENTS.md` |
 
+### Dynamic Documentation
+
+The LLM configuration **fetches documentation from the atl-cli repo at runtime**. This keeps your LLM's knowledge in sync with the actual tool.
+
+It looks for docs in these locations (in order):
+- `docs/llm.md`
+- `docs/CLAUDE.md`
+- `LLM.md`
+- `docs/cli.md`
+
+If found, it replaces the default atl-cli section with the fetched documentation.
+
 The documentation includes:
 - Command syntax and examples
 - Safety guidelines (e.g., confirm before SQL writes)
@@ -120,7 +132,7 @@ The documentation includes:
 
 ### atl-cli Repository
 
-The atl-cli tool must be installed from a GitHub repository. Set the `ATL_CLI_REPO` environment variable:
+By default, atl-cli is installed from `enthus-appdev/atl-cli`. To use a different repository:
 
 ```bash
 ATL_CLI_REPO=myorg/atl-cli llm-cli-setup --atl
