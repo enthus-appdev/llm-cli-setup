@@ -17,23 +17,8 @@ A CLI tool to set up developer tools and teach your AI coding assistants (Claude
 
 ## Quick Start
 
-### Install globally
-
 ```bash
-npm install -g llm-cli-setup
-llm-cli-setup
-```
-
-### Or run directly with npx
-
-```bash
-npx llm-cli-setup
-```
-
-### Or clone and run locally
-
-```bash
-git clone <repo-url>
+git clone git@github.com:enthus-appdev/llm-cli-setup.git
 cd llm-cli-setup
 npm install
 npm start
@@ -170,15 +155,8 @@ llm-cli-setup/
 ## Development
 
 ```bash
-# Install dependencies
-npm install
-
-# Run locally
-npm start
-
-# Link for global testing
-npm link
-llm-cli-setup
+npm install   # Install dependencies
+npm start     # Run the CLI
 ```
 
 ## Troubleshooting
