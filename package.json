@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "CLI tools setup for Enthus developers - sqlcmd, GitHub CLI, Atlassian CLI with LLM configuration",
   "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./installers": "./lib/installers/index.js",
+    "./llm": "./lib/llm/index.js",
+    "./utils": "./lib/utils/index.js"
+  },
   "bin": {
     "enthus-cli-setup": "./bin/cli.js"
   },
