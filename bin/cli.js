@@ -2,6 +2,7 @@
 
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import { createRequire } from 'module';
 
 import { installSqlcmd, configureSqlEnv } from '../lib/installers/sqlcmd.js';
 import { configureGitHubCli } from '../lib/installers/gh.js';
@@ -9,7 +10,8 @@ import { configureAtlassianCli } from '../lib/installers/atl.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
-const VERSION = '1.0.0';
+const require = createRequire(import.meta.url);
+const { version: VERSION } = require('../package.json');
 
 /**
  * Print header banner
@@ -68,7 +70,7 @@ const runMenu = async () => {
         { name: '🗄️  Configure SQL tools (sqlcmd + sql-env)', value: 'sql' },
         { name: '🐙 Configure GitHub CLI', value: 'gh' },
         { name: '📋 Configure Atlassian CLI', value: 'atl' },
-        { name: '🤖 Configure LLM tools (Claude Code, Codex)', value: 'llm' },
+        { name: '🤖 Configure AI assistants (Claude, Gemini, Cursor, Copilot...)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
       ],
@@ -106,7 +108,7 @@ const runMenu = async () => {
         type: 'confirm',
         name: 'continue',
         message: 'Return to menu?',
-        default: false,
+        default: true,
       },
     ]);
 

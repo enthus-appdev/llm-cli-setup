@@ -9,7 +9,7 @@ This is a CLI tool (`llm-cli-setup`) that helps developers set up CLI tools and 
 - **sqlcmd + sql-env**: SQL Server CLI with environment switching
 - **gh**: GitHub CLI
 - **atl**: Atlassian CLI (Jira/Confluence)
-- **LLM configs**: Documentation injection for Claude Code and Codex
+- **LLM configs**: Documentation injection for Claude Code, Gemini CLI, and Codex
 
 ## Development Commands
 
@@ -30,22 +30,18 @@ npm link        # Link globally for testing
 - `atl.js` - Atlassian CLI installation (requires ATL_CLI_REPO env var)
 
 ### LLM Configuration (`lib/llm/`)
-- `index.js` - Detects LLM tools and injects documentation
-
-### Templates (`templates/`)
-- `claude-tools.md` - CLI docs for Claude Code
-- `codex-tools.md` - CLI docs for OpenAI Codex
+- `index.js` - Injects CLI documentation into LLM config files using block markers
 
 ### Utilities (`lib/utils/`)
 - `platform.js` - Package manager detection, command execution
-- `shell.js` - Shell profile detection, file operations
+- `shell.js` - Shell profile detection, block marker operations, file utilities
 
 ## Key Patterns
 
 ### Block Markers
-Configuration is injected between markers for safe updates:
-- Claude: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
-- Shell: `# === SQL Environment Switcher ===` ... `# === End ... ===`
+Configuration is injected between markers for safe updates (preserves user content):
+- LLM configs: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
+- Shell profile: `# === SQL Environment Switcher ===` ... `# === End SQL Environment Switcher ===`
 
 ### Credentials Security
 SQL passwords stored in `~/.sql-env-credentials` with mode 0600, separate from shell profile.
@@ -55,6 +51,6 @@ atl-cli repo must be configured via `ATL_CLI_REPO` environment variable.
 
 ## Adding Support for New LLMs
 
-1. Add entry to `LLM_TOOLS` in `lib/llm/index.js`
-2. Create template in `templates/`
-3. Define `configPath`, `blockStart`, `blockEnd`, `createWrapper`
+1. Add entry to `GLOBAL_LLM_TOOLS` in `lib/llm/index.js` with `name`, `dir`, and `file`
+2. Add display entry to `SUPPORTED_TOOLS` array
+3. The block marker injection will automatically handle the new tool

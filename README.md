@@ -1,12 +1,12 @@
 # llm-cli-setup
 
-A CLI tool to set up developer tools and teach your AI coding assistants (Claude Code, Codex) how to use them.
+A CLI tool to set up developer tools and teach your AI coding assistants how to use them.
 
 ## What This Does
 
 1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl)
 2. **Configures sql-env**: Shell function to switch between database environments
-3. **Teaches your LLM**: Injects documentation into Claude Code and Codex config files
+3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
 | Tool | Purpose |
 |------|---------|
@@ -55,7 +55,8 @@ sql-env              # Show current environment
 sql-env local        # Local Docker (localhost,1433)
 sql-env dev          # Development server
 sql-env stage        # Staging server
-sql-env prod         # Production (use with caution)
+sql-env prod-ro      # Production read-only
+sql-env prod         # Production read-write (use with caution)
 ```
 
 Then run queries without credentials:
@@ -79,7 +80,8 @@ gh issue view 123             # View issue
 ### Atlassian CLI (atl)
 
 ```bash
-atl auth status               # Check authentication
+atl auth setup                # First-time OAuth setup (required once)
+atl auth login                # Authenticate (opens browser)
 atl issue view PROJ-1234      # View Jira issue
 atl issue list --assignee @me # List your issues
 atl confluence page search X  # Search Confluence
@@ -87,41 +89,28 @@ atl confluence page search X  # Search Confluence
 
 ## LLM Configuration
 
-This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their configuration files.
+This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their config files.
 
-### Supported LLMs
+### Supported AI Tools
 
-| LLM | Config Location |
-|-----|-----------------|
+| AI Tool | Config Location |
+|---------|-----------------|
 | Claude Code | `~/.claude/CLAUDE.md` |
-| OpenAI Codex | `~/.codex/AGENTS.md` |
+| Gemini CLI | `~/.gemini/GEMINI.md` |
+| OpenAI Codex CLI | `~/.codex/CODEX.md` |
 
-### Dynamic Documentation
+### How It Works
 
-The LLM configuration **fetches documentation from the atl-cli repo at runtime**. This keeps your LLM's knowledge in sync with the actual tool.
-
-It looks for docs in these locations (in order):
-- `docs/llm.md`
-- `docs/CLAUDE.md`
-- `LLM.md`
-- `docs/cli.md`
-
-If found, it replaces the default atl-cli section with the fetched documentation.
+1. Reads existing config file (if any)
+2. Injects CLI documentation between block markers: `<!-- === CLI Tools === -->`
+3. Preserves all your existing content outside the markers
 
 The documentation includes:
-- Command syntax and examples
+- Command syntax and examples for sqlcmd, sql-env, gh, and atl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
-## Configuration
-
-### atl-cli Repository
-
-By default, atl-cli is installed from `enthus-appdev/atl-cli`. To use a different repository:
-
-```bash
-ATL_CLI_REPO=myorg/atl-cli llm-cli-setup --atl
-```
+**Your existing configuration is safe** - only content between the CLI Tools markers is modified.
 
 ## Requirements
 
@@ -141,13 +130,10 @@ llm-cli-setup/
 │   │   ├── gh.js           # GitHub CLI setup
 │   │   └── atl.js          # Atlassian CLI setup
 │   ├── llm/
-│   │   └── index.js        # LLM configuration
+│   │   └── index.js        # LLM configuration with block markers
 │   └── utils/
 │       ├── platform.js     # Platform detection
 │       └── shell.js        # Shell utilities
-├── templates/
-│   ├── claude-tools.md     # Claude Code template
-│   └── codex-tools.md      # Codex template
 ├── package.json
 └── README.md
 ```
@@ -163,12 +149,16 @@ npm start     # Run the CLI
 
 ### sql-env: command not found
 
-Run `source ~/.zshrc` (or your shell profile) after setup, or restart your terminal.
+Run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) after setup, or restart your terminal.
 
 ### atl installation fails
 
-1. Make sure `ATL_CLI_REPO` is set
-2. Make sure GitHub CLI is authenticated: `gh auth login`
+1. Make sure GitHub CLI is authenticated first: `gh auth login`
+2. Ensure you have access to the atl-cli repo (default: `enthus-appdev/atl-cli`)
+
+### atl auth fails
+
+First-time users must run `atl auth setup` before `atl auth login`. This creates the OAuth app configuration.
 
 ### Permission denied
 
