@@ -15,26 +15,32 @@ Plus it configures your AI coding assistants (Claude Code, Codex) to know how to
 
 ## Quick Start
 
-### Option 1: npm (recommended)
+### Option 1: Install globally from git (recommended)
 
 ```bash
-npm install -g @enthus/cli-tools
+npm install -g git+ssh://git@github.com:enthus-appdev/cli-tools.git
 enthus-cli-setup
 ```
 
-### Option 2: npx (one-time use)
+### Option 2: Run directly with npx
 
 ```bash
-npx @enthus/cli-tools
+npx git+ssh://git@github.com:enthus-appdev/cli-tools.git
 ```
 
-### Option 3: Clone and run
+### Option 3: Clone and run locally
 
 ```bash
 git clone git@github.com:enthus-appdev/cli-tools.git
 cd cli-tools
 npm install
 npm start
+```
+
+### Updating
+
+```bash
+npm update -g enthus-cli-tools
 ```
 
 ## Usage
@@ -179,4 +185,4 @@ Some operations require sudo. The script will prompt when needed.
 
 ## License
 
-MIT - Internal use at Enthus
+Internal use at Enthus only.

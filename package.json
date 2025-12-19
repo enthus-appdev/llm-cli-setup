@@ -1,5 +1,5 @@
 {
-  "name": "@enthus/cli-tools",
+  "name": "enthus-cli-tools",
   "version": "1.0.0",
   "description": "CLI tools setup for Enthus developers - sqlcmd, GitHub CLI, Atlassian CLI with LLM configuration",
   "type": "module",
@@ -11,17 +11,9 @@
     "lint": "eslint .",
     "format": "prettier --write ."
   },
-  "keywords": [
-    "cli",
-    "enthus",
-    "developer-tools",
-    "sqlcmd",
-    "github-cli",
-    "atlassian-cli",
-    "llm"
-  ],
   "author": "Enthus",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enthus-appdev/cli-tools.git"
