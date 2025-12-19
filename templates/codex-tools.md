@@ -1,4 +1,4 @@
-# Enthus CLI Tools
+# CLI Tools
 
 This document provides instructions for using CLI tools available in this development environment.
 
@@ -10,10 +10,10 @@ Use `sql-env` to switch between database environments before running queries:
 
 ```bash
 sql-env              # Show current environment and available options
-sql-env local        # Local Docker container (localhost,1533)
+sql-env local        # Local Docker container (localhost,1433)
+sql-env dev          # Development environment
 sql-env stage        # Staging environment
-sql-env prod-ro      # Production read-only
-sql-env prod-rw      # Production read-write (USE WITH CAUTION)
+sql-env prod         # Production (USE WITH CAUTION)
 ```
 
 ### Running Queries
@@ -22,7 +22,7 @@ After switching environments, run sqlcmd without credentials:
 
 ```bash
 sqlcmd -Q "SELECT @@VERSION"
-sqlcmd -d Steps_Development -Q "SELECT TOP 10 * FROM sao.CUSTOMER_M"
+sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
 sqlcmd -i ./scripts/query.sql
 ```
 
@@ -45,7 +45,7 @@ gh auth login     # Re-authenticate if needed
 ### Pull Requests
 
 ```bash
-gh pr create --base master --title "feat: NX-1234 Description"
+gh pr create --base main --title "feat: Add new feature"
 gh pr list --state open --author @me
 gh pr view 123
 gh pr checkout 123
@@ -64,13 +64,13 @@ gh issue create --title "Bug: ..." --label bug
 
 ```bash
 gh repo view
-gh repo clone enthus-appdev/negsoft-api
+gh repo clone owner/repo
 ```
 
 ### API Access
 
 ```bash
-gh api repos/enthus-appdev/negsoft-api/pulls/123/comments
+gh api repos/owner/repo/pulls/123/comments
 ```
 
 ## Atlassian CLI (atl)
@@ -88,29 +88,29 @@ atl auth login     # Re-authenticate if needed
 
 ```bash
 # View
-atl issue view NX-1234
-atl issue view NX-1234 --json
-atl issue view NX-1234 --web
+atl issue view PROJ-1234
+atl issue view PROJ-1234 --json
+atl issue view PROJ-1234 --web
 
 # List
 atl issue list --assignee @me
-atl issue list --project NX
+atl issue list --project PROJ
 atl issue list --jql "status = Open"
 
 # Create
-atl issue create --project NX --type Bug --summary "Title"
-atl issue create --project NX --type Task --summary "Title" --description "Details"
+atl issue create --project PROJ --type Bug --summary "Title"
+atl issue create --project PROJ --type Task --summary "Title" --description "Details"
 
 # Edit
-atl issue edit NX-1234 --summary "New summary"
-atl issue edit NX-1234 --assignee @me
+atl issue edit PROJ-1234 --summary "New summary"
+atl issue edit PROJ-1234 --assignee @me
 
 # Transitions
-atl issue transition NX-1234 "In Progress"
-atl issue transition NX-1234 --list
+atl issue transition PROJ-1234 "In Progress"
+atl issue transition PROJ-1234 --list
 
 # Comments
-atl issue comment NX-1234 --body "Comment text"
+atl issue comment PROJ-1234 --body "Comment text"
 ```
 
 ### Confluence
@@ -152,7 +152,7 @@ code here
 {code}
 
 [Link text|https://example.com]
-[NX-1234]  # Auto-links to issue
+[PROJ-1234]  # Auto-links to issue
 
 ||Header 1||Header 2||
 |Cell 1|Cell 2|

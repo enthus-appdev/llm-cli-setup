@@ -1,7 +1,7 @@
 {
-  "name": "enthus-cli-tools",
+  "name": "dev-cli-tools",
   "version": "1.0.0",
-  "description": "CLI tools setup for Enthus developers - sqlcmd, GitHub CLI, Atlassian CLI with LLM configuration",
+  "description": "CLI tools setup for developers - sqlcmd/sql-env, GitHub CLI, Atlassian CLI with LLM configuration",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
@@ -11,19 +11,18 @@
     "./utils": "./lib/utils/index.js"
   },
   "bin": {
-    "enthus-cli-setup": "./bin/cli.js"
+    "dev-cli-setup": "./bin/cli.js"
   },
   "scripts": {
     "start": "node bin/cli.js",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
-  "author": "Enthus",
-  "license": "UNLICENSED",
-  "private": true,
+  "author": "",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enthus-appdev/cli-tools.git"
+    "url": "git+https://github.com/hinnebusch/dev-cli-tools.git"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,4 +1,4 @@
-<!-- === Enthus CLI Tools === -->
+<!-- === CLI Tools === -->
 ## CLI Tools
 
 This section documents CLI tools available for development.
@@ -8,16 +8,16 @@ This section documents CLI tools available for development.
 Use `sql-env` to switch between database environments:
 ```bash
 sql-env              # Show current environment
-sql-env local        # Local Docker (localhost,1533)
+sql-env local        # Local Docker (localhost,1433)
+sql-env dev          # Development server
 sql-env stage        # Staging server
-sql-env prod-ro      # Production read-only
-sql-env prod-rw      # Production read-write
+sql-env prod         # Production (use with caution)
 ```
 
 Then run queries without credentials:
 ```bash
 sqlcmd -Q "SELECT @@VERSION"
-sqlcmd -d Steps_Development -Q "SELECT TOP 10 * FROM sao.CUSTOMER_M"
+sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
 sqlcmd -i ./scripts/query.sql
 ```
 
@@ -25,7 +25,7 @@ sqlcmd -i ./scripts/query.sql
 
 ### GitHub CLI (gh)
 
-Authenticate (already configured via enthus-cli-tools):
+Authentication:
 ```bash
 gh auth status                          # Check authentication
 gh auth login                           # Re-authenticate if needed
@@ -34,7 +34,7 @@ gh auth login                           # Re-authenticate if needed
 Common commands:
 ```bash
 # Pull Requests
-gh pr create --base master --title "feat: NX-1234 Description"
+gh pr create --base main --title "feat: Add new feature"
 gh pr list --state open --author @me
 gh pr view 123
 gh pr checkout 123                      # Check out PR branch locally
@@ -47,10 +47,10 @@ gh issue create --title "Bug: ..." --label bug
 
 # Repository
 gh repo view
-gh repo clone enthus-appdev/negsoft-api
+gh repo clone owner/repo
 
 # API (for advanced queries)
-gh api repos/enthus-appdev/negsoft-api/pulls/123/comments
+gh api repos/owner/repo/pulls/123/comments
 ```
 
 ### Atlassian CLI (atl)
@@ -66,44 +66,44 @@ atl auth login                          # Re-authenticate if needed
 **Jira Issues:**
 ```bash
 # View issues
-atl issue view NX-1234                  # View issue details
-atl issue view NX-1234 --json           # View as JSON
-atl issue view NX-1234 --web            # Open in browser
+atl issue view PROJ-1234                # View issue details
+atl issue view PROJ-1234 --json         # View as JSON
+atl issue view PROJ-1234 --web          # Open in browser
 
 # List issues
 atl issue list --assignee @me           # Your assigned issues
-atl issue list --project NX             # Issues in project
+atl issue list --project PROJ           # Issues in project
 atl issue list --jql "status = Open"    # Custom JQL query
 
 # Create issues
-atl issue create --project NX --type Bug --summary "Title"
-atl issue create --project NX --type Task --summary "Title" --description "Details"
-atl issue create --project NX --parent NX-123 --summary "Subtask"
+atl issue create --project PROJ --type Bug --summary "Title"
+atl issue create --project PROJ --type Task --summary "Title" --description "Details"
+atl issue create --project PROJ --parent PROJ-123 --summary "Subtask"
 
 # Edit issues
-atl issue edit NX-1234 --summary "New summary"
-atl issue edit NX-1234 --assignee @me
-atl issue edit NX-1234 --add-label bug --remove-label wontfix
-atl issue edit NX-1234 --field "Story Points=8"
+atl issue edit PROJ-1234 --summary "New summary"
+atl issue edit PROJ-1234 --assignee @me
+atl issue edit PROJ-1234 --add-label bug --remove-label wontfix
+atl issue edit PROJ-1234 --field "Story Points=8"
 
 # Transitions and workflow
-atl issue transition NX-1234 "In Progress"
-atl issue transition NX-1234 --list     # List available transitions
+atl issue transition PROJ-1234 "In Progress"
+atl issue transition PROJ-1234 --list   # List available transitions
 
 # Comments
-atl issue comment NX-1234 --body "Comment text"
-atl issue comment NX-1234 --list        # List comments
+atl issue comment PROJ-1234 --body "Comment text"
+atl issue comment PROJ-1234 --list      # List comments
 
 # Issue links
-atl issue link NX-1234 NX-5678                    # Link issues (default: Relates)
-atl issue link NX-1234 NX-5678 --type Blocks      # Link with specific type
+atl issue link PROJ-1234 PROJ-5678                  # Link issues (default: Relates)
+atl issue link PROJ-1234 PROJ-5678 --type Blocks    # Link with specific type
 
 # Web links
-atl issue weblink NX-1234 --url "https://..." --title "Title"
+atl issue weblink PROJ-1234 --url "https://..." --title "Title"
 
 # Sprint management
-atl issue sprint NX-1234 --sprint-id 123          # Move to sprint
-atl issue sprint NX-1234 --backlog                # Move to backlog
+atl issue sprint PROJ-1234 --sprint-id 123          # Move to sprint
+atl issue sprint PROJ-1234 --backlog                # Move to backlog
 ```
 
 **Confluence:**
@@ -197,7 +197,7 @@ preformatted text
 {noformat}
 
 [Link text|https://example.com]
-[NX-1234]                           # Auto-links to issue
+[PROJ-1234]                         # Auto-links to issue
 
 ||Header 1||Header 2||
 |Cell 1|Cell 2|
@@ -215,4 +215,4 @@ Quoted text
 - *Descriptions* (`atl issue create/edit`): Wiki markup works
 - Keep formatting simple - plain text with dash bullets works best for comments
 - For issue descriptions, you can use `{code}` blocks and `*bold*`
-<!-- === End Enthus CLI Tools === -->
+<!-- === End CLI Tools === -->

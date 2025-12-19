@@ -1,6 +1,6 @@
-# Enthus CLI Tools
+# dev-cli-tools
 
-A CLI tool to set up developer tools and configure AI coding assistants for Enthus developers.
+A CLI tool to set up developer tools and configure AI coding assistants.
 
 ## What This Installs
 
@@ -15,32 +15,26 @@ Plus it configures your AI coding assistants (Claude Code, Codex) to know how to
 
 ## Quick Start
 
-### Option 1: Install globally from git (recommended)
+### Install globally
 
 ```bash
-npm install -g git+ssh://git@github.com:enthus-appdev/cli-tools.git
-enthus-cli-setup
+npm install -g dev-cli-tools
+dev-cli-setup
 ```
 
-### Option 2: Run directly with npx
+### Or run directly with npx
 
 ```bash
-npx git+ssh://git@github.com:enthus-appdev/cli-tools.git
+npx dev-cli-tools
 ```
 
-### Option 3: Clone and run locally
+### Or clone and run locally
 
 ```bash
-git clone git@github.com:enthus-appdev/cli-tools.git
-cd cli-tools
+git clone https://github.com/hinnebusch/dev-cli-tools.git
+cd dev-cli-tools
 npm install
 npm start
-```
-
-### Updating
-
-```bash
-npm update -g enthus-cli-tools
 ```
 
 ## Usage
@@ -48,7 +42,7 @@ npm update -g enthus-cli-tools
 ### Interactive Mode (default)
 
 ```bash
-enthus-cli-setup
+dev-cli-setup
 ```
 
 Shows a menu to configure individual tools or run full setup.
@@ -56,11 +50,11 @@ Shows a menu to configure individual tools or run full setup.
 ### Command Line Options
 
 ```bash
-enthus-cli-setup --full    # Run full setup
-enthus-cli-setup --sql     # Configure SQL tools only
-enthus-cli-setup --gh      # Configure GitHub CLI only
-enthus-cli-setup --atl     # Configure Atlassian CLI only
-enthus-cli-setup --llm     # Configure LLM tools only
+dev-cli-setup --full    # Run full setup
+dev-cli-setup --sql     # Configure SQL tools only
+dev-cli-setup --gh      # Configure GitHub CLI only
+dev-cli-setup --atl     # Configure Atlassian CLI only
+dev-cli-setup --llm     # Configure LLM tools only
 ```
 
 ## Tools Configured
@@ -71,17 +65,17 @@ Switch between database environments with a single command:
 
 ```bash
 sql-env              # Show current environment
-sql-env local        # Local Docker (localhost,1533)
+sql-env local        # Local Docker (localhost,1433)
+sql-env dev          # Development server
 sql-env stage        # Staging server
-sql-env prod-ro      # Production read-only
-sql-env prod-rw      # Production read-write
+sql-env prod         # Production (use with caution)
 ```
 
 Then run queries without credentials:
 
 ```bash
 sqlcmd -Q "SELECT @@VERSION"
-sqlcmd -d Steps_Development -Q "SELECT TOP 10 * FROM sao.CUSTOMER_M"
+sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
 ```
 
 **Security**: Passwords are stored in `~/.sql-env-credentials` with mode 0600.
@@ -91,15 +85,15 @@ sqlcmd -d Steps_Development -Q "SELECT TOP 10 * FROM sao.CUSTOMER_M"
 ```bash
 gh auth status                # Check authentication
 gh pr list --author @me       # List your PRs
-gh pr create --base master    # Create PR
-gh issue view NX-1234         # View issue
+gh pr create --base main      # Create PR
+gh issue view 123             # View issue
 ```
 
 ### Atlassian CLI (atl)
 
 ```bash
 atl auth status               # Check authentication
-atl issue view NX-1234        # View Jira issue
+atl issue view PROJ-1234      # View Jira issue
 atl issue list --assignee @me # List your issues
 atl confluence page search X  # Search Confluence
 ```
@@ -120,6 +114,16 @@ The documentation includes:
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
+## Configuration
+
+### atl-cli Repository
+
+By default, atl-cli is installed from `hinnebusch/atl-cli`. To use a different repository:
+
+```bash
+ATL_CLI_REPO=myorg/atl-cli dev-cli-setup --atl
+```
+
 ## Requirements
 
 - **Node.js** 18+
@@ -129,7 +133,7 @@ The documentation includes:
 ## Project Structure
 
 ```
-enthus-cli-tools/
+dev-cli-tools/
 ├── bin/
 │   └── cli.js              # Main entry point
 ├── lib/
@@ -160,7 +164,7 @@ npm start
 
 # Link for global testing
 npm link
-enthus-cli-setup
+dev-cli-setup
 ```
 
 ## Troubleshooting
@@ -185,4 +189,4 @@ Some operations require sudo. The script will prompt when needed.
 
 ## License
 
-Internal use at Enthus only.
+MIT

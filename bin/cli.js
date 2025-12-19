@@ -18,7 +18,7 @@ const printHeader = () => {
   console.log(chalk.cyan(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   ${chalk.white.bold('Enthus CLI Tools Setup')}                              ║
+║   ${chalk.white.bold('Developer CLI Tools Setup')}                           ║
 ║   ${chalk.gray(`v${VERSION}`)}                                                ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
@@ -146,15 +146,15 @@ const parseArgs = () => {
 
   if (args.includes('--help') || args.includes('-h')) {
     console.log(`
-${chalk.bold('Enthus CLI Tools Setup')} v${VERSION}
+${chalk.bold('Developer CLI Tools Setup')} v${VERSION}
 
 ${chalk.bold('Usage:')}
-  enthus-cli-setup              Interactive menu
-  enthus-cli-setup --full       Run full setup (non-interactive prompts still shown)
-  enthus-cli-setup --sql        Configure SQL tools only
-  enthus-cli-setup --gh         Configure GitHub CLI only
-  enthus-cli-setup --atl        Configure Atlassian CLI only
-  enthus-cli-setup --llm        Configure LLM tools only
+  dev-cli-setup              Interactive menu
+  dev-cli-setup --full       Run full setup (non-interactive prompts still shown)
+  dev-cli-setup --sql        Configure SQL tools only
+  dev-cli-setup --gh         Configure GitHub CLI only
+  dev-cli-setup --atl        Configure Atlassian CLI only
+  dev-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
   -h, --help                    Show this help message

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 ## Project Overview
 
-This is a CLI tool (`@enthus/cli-tools`) that helps Enthus developers set up their development environment. It installs and configures:
+This is a CLI tool (`dev-cli-tools`) that helps developers set up their development environment. It installs and configures:
 
 - **sqlcmd + sql-env**: SQL Server CLI with environment switching
 - **gh**: GitHub CLI
@@ -27,7 +27,7 @@ npm link        # Link globally for testing
 ### Installers (`lib/installers/`)
 - `sqlcmd.js` - sqlcmd installation + sql-env shell function
 - `gh.js` - GitHub CLI installation and authentication
-- `atl.js` - Atlassian CLI installation (from enthus-appdev/atl-cli)
+- `atl.js` - Atlassian CLI installation (configurable repo via ATL_CLI_REPO env var)
 
 ### LLM Configuration (`lib/llm/`)
 - `index.js` - Detects LLM tools and injects documentation
@@ -44,11 +44,14 @@ npm link        # Link globally for testing
 
 ### Block Markers
 Configuration is injected between markers for safe updates:
-- Claude: `<!-- === Enthus CLI Tools === -->` ... `<!-- === End Enthus CLI Tools === -->`
-- Shell: `# === Enthus SQL Environment Switcher ===` ... `# === End ... ===`
+- Claude: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
+- Shell: `# === SQL Environment Switcher ===` ... `# === End ... ===`
 
 ### Credentials Security
 SQL passwords stored in `~/.sql-env-credentials` with mode 0600, separate from shell profile.
+
+### Configurable Repositories
+atl-cli repo can be configured via `ATL_CLI_REPO` environment variable.
 
 ## Adding Support for New LLMs
 
