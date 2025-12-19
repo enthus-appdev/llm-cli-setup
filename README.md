@@ -79,10 +79,7 @@ gh issue view 123             # View issue
 
 ### Atlassian CLI (atl)
 
-> **Note**: To install atl-cli, you must set the `ATL_CLI_REPO` environment variable to point to your atl-cli repository:
-> ```bash
-> export ATL_CLI_REPO="your-org/atl-cli"
-> ```
+Installs from [enthus-appdev/atl-cli](https://github.com/enthus-appdev/atl-cli) by default. Override with `ATL_CLI_REPO` env var if needed.
 
 ```bash
 atl auth setup                # First-time OAuth setup (required once)
@@ -158,9 +155,8 @@ Run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) after setup, or restart yo
 
 ### atl installation fails
 
-1. Set `ATL_CLI_REPO` environment variable: `export ATL_CLI_REPO="your-org/atl-cli"`
-2. Make sure GitHub CLI is authenticated: `gh auth login`
-3. Ensure you have access to the atl-cli repository
+1. Make sure GitHub CLI is authenticated: `gh auth login`
+2. Ensure you have access to the atl-cli repo (default: [enthus-appdev/atl-cli](https://github.com/enthus-appdev/atl-cli))
 
 ### atl auth fails
 
