@@ -18,7 +18,7 @@ const printHeader = () => {
   console.log(chalk.cyan(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   ${chalk.white.bold('Developer CLI Tools Setup')}                           ║
+║   ${chalk.white.bold('LLM CLI Setup')}                                       ║
 ║   ${chalk.gray(`v${VERSION}`)}                                                ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
@@ -146,15 +146,15 @@ const parseArgs = () => {
 
   if (args.includes('--help') || args.includes('-h')) {
     console.log(`
-${chalk.bold('Developer CLI Tools Setup')} v${VERSION}
+${chalk.bold('LLM CLI Setup')} v${VERSION}
 
 ${chalk.bold('Usage:')}
-  dev-cli-setup              Interactive menu
-  dev-cli-setup --full       Run full setup (non-interactive prompts still shown)
-  dev-cli-setup --sql        Configure SQL tools only
-  dev-cli-setup --gh         Configure GitHub CLI only
-  dev-cli-setup --atl        Configure Atlassian CLI only
-  dev-cli-setup --llm        Configure LLM tools only
+  llm-cli-setup              Interactive menu
+  llm-cli-setup --full       Run full setup (non-interactive prompts still shown)
+  llm-cli-setup --sql        Configure SQL tools only
+  llm-cli-setup --gh         Configure GitHub CLI only
+  llm-cli-setup --atl        Configure Atlassian CLI only
+  llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
   -h, --help                    Show this help message

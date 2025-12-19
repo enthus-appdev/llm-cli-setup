@@ -1,8 +1,12 @@
-# dev-cli-tools
+# llm-cli-setup
 
-A CLI tool to set up developer tools and configure AI coding assistants.
+A CLI tool to set up developer tools and teach your AI coding assistants (Claude Code, Codex) how to use them.
 
-## What This Installs
+## What This Does
+
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl)
+2. **Configures sql-env**: Shell function to switch between database environments
+3. **Teaches your LLM**: Injects documentation into Claude Code and Codex config files
 
 | Tool | Purpose |
 |------|---------|
@@ -11,28 +15,26 @@ A CLI tool to set up developer tools and configure AI coding assistants.
 | **gh** | GitHub CLI for PR/issue management |
 | **atl** | Atlassian CLI for Jira/Confluence |
 
-Plus it configures your AI coding assistants (Claude Code, Codex) to know how to use these tools.
-
 ## Quick Start
 
 ### Install globally
 
 ```bash
-npm install -g dev-cli-tools
-dev-cli-setup
+npm install -g llm-cli-setup
+llm-cli-setup
 ```
 
 ### Or run directly with npx
 
 ```bash
-npx dev-cli-tools
+npx llm-cli-setup
 ```
 
 ### Or clone and run locally
 
 ```bash
-git clone https://github.com/hinnebusch/dev-cli-tools.git
-cd dev-cli-tools
+git clone <repo-url>
+cd llm-cli-setup
 npm install
 npm start
 ```
@@ -42,7 +44,7 @@ npm start
 ### Interactive Mode (default)
 
 ```bash
-dev-cli-setup
+llm-cli-setup
 ```
 
 Shows a menu to configure individual tools or run full setup.
@@ -50,11 +52,11 @@ Shows a menu to configure individual tools or run full setup.
 ### Command Line Options
 
 ```bash
-dev-cli-setup --full    # Run full setup
-dev-cli-setup --sql     # Configure SQL tools only
-dev-cli-setup --gh      # Configure GitHub CLI only
-dev-cli-setup --atl     # Configure Atlassian CLI only
-dev-cli-setup --llm     # Configure LLM tools only
+llm-cli-setup --full    # Run full setup
+llm-cli-setup --sql     # Configure SQL tools only
+llm-cli-setup --gh      # Configure GitHub CLI only
+llm-cli-setup --atl     # Configure Atlassian CLI only
+llm-cli-setup --llm     # Configure LLM tools only
 ```
 
 ## Tools Configured
@@ -118,10 +120,10 @@ The documentation includes:
 
 ### atl-cli Repository
 
-By default, atl-cli is installed from `hinnebusch/atl-cli`. To use a different repository:
+The atl-cli tool must be installed from a GitHub repository. Set the `ATL_CLI_REPO` environment variable:
 
 ```bash
-ATL_CLI_REPO=myorg/atl-cli dev-cli-setup --atl
+ATL_CLI_REPO=myorg/atl-cli llm-cli-setup --atl
 ```
 
 ## Requirements
@@ -133,7 +135,7 @@ ATL_CLI_REPO=myorg/atl-cli dev-cli-setup --atl
 ## Project Structure
 
 ```
-dev-cli-tools/
+llm-cli-setup/
 ├── bin/
 │   └── cli.js              # Main entry point
 ├── lib/
@@ -164,7 +166,7 @@ npm start
 
 # Link for global testing
 npm link
-dev-cli-setup
+llm-cli-setup
 ```
 
 ## Troubleshooting
@@ -175,13 +177,8 @@ Run `source ~/.zshrc` (or your shell profile) after setup, or restart your termi
 
 ### atl installation fails
 
-atl-cli requires GitHub CLI to be authenticated first. Run:
-
-```bash
-gh auth login
-```
-
-Then try again.
+1. Make sure `ATL_CLI_REPO` is set
+2. Make sure GitHub CLI is authenticated: `gh auth login`
 
 ### Permission denied
 

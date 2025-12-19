@@ -1,7 +1,7 @@
 {
-  "name": "dev-cli-tools",
+  "name": "llm-cli-setup",
   "version": "1.0.0",
-  "description": "CLI tools setup for developers - sqlcmd/sql-env, GitHub CLI, Atlassian CLI with LLM configuration",
+  "description": "CLI tools setup with LLM integration - sqlcmd/sql-env, GitHub CLI, Atlassian CLI with Claude Code and Codex configuration",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
@@ -11,7 +11,7 @@
     "./utils": "./lib/utils/index.js"
   },
   "bin": {
-    "dev-cli-setup": "./bin/cli.js"
+    "llm-cli-setup": "./bin/cli.js"
   },
   "scripts": {
     "start": "node bin/cli.js",
@@ -22,7 +22,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hinnebusch/dev-cli-tools.git"
+    "url": ""
   },
   "engines": {
     "node": ">=18.0.0"
