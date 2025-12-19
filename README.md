@@ -18,7 +18,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 ## Quick Start
 
 ```bash
-git clone git@github.com:enthus-appdev/llm-cli-setup.git
+git clone https://github.com/your-org/llm-cli-setup.git
 cd llm-cli-setup
 npm install
 npm start
@@ -78,6 +78,11 @@ gh issue view 123             # View issue
 ```
 
 ### Atlassian CLI (atl)
+
+> **Note**: To install atl-cli, you must set the `ATL_CLI_REPO` environment variable to point to your atl-cli repository:
+> ```bash
+> export ATL_CLI_REPO="your-org/atl-cli"
+> ```
 
 ```bash
 atl auth setup                # First-time OAuth setup (required once)
@@ -153,8 +158,9 @@ Run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) after setup, or restart yo
 
 ### atl installation fails
 
-1. Make sure GitHub CLI is authenticated first: `gh auth login`
-2. Ensure you have access to the atl-cli repo (default: `enthus-appdev/atl-cli`)
+1. Set `ATL_CLI_REPO` environment variable: `export ATL_CLI_REPO="your-org/atl-cli"`
+2. Make sure GitHub CLI is authenticated: `gh auth login`
+3. Ensure you have access to the atl-cli repository
 
 ### atl auth fails
 

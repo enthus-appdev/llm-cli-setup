@@ -122,7 +122,7 @@ const runMenu = async () => {
  * Print final summary
  */
 const printSummary = () => {
-  const { shell, profilePath } = getShellProfile();
+  const { profilePath } = getShellProfile();
 
   console.log(chalk.cyan('\n═══════════════════════════════════════════════════════════'));
   console.log(chalk.cyan.bold('                     Setup Complete!'));
