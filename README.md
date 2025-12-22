@@ -69,11 +69,18 @@ sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
 
 ```bash
 sql-env add my-custom-env
-# Prompts for: display name, server, username, password, database
+# Prompts for: display name, server, username, password, database, read-only mode
+```
+
+**Read-only mode**: When enabled for an environment, sqlcmd automatically uses `-K ReadOnly` (ApplicationIntent=ReadOnly). This prevents accidental writes to production databases without needing separate read-only database users.
+
+```bash
+sql-env prod-ro              # Switches and shows [READ-ONLY]
+sqlcmd -Q "SELECT 1"         # Automatically adds -K ReadOnly
 ```
 
 **Files**:
-- `~/.sql-env.json` - Environment configuration (server, user, database)
+- `~/.sql-env.json` - Environment configuration (server, user, database, readonly)
 - `~/.sql-env-credentials` - Passwords (mode 0600, never committed)
 
 ### GitHub CLI (gh)
