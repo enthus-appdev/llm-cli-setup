@@ -80,6 +80,7 @@ sqlcmd -Q "SELECT 1"         # Automatically adds -K ReadOnly
 ```
 
 **Files**:
+- `~/.sql-env/sql-env.sh` - Shell script (sourced from profile)
 - `~/.sql-env.json` - Environment configuration (server, user, database, readonly)
 - `~/.sql-env-credentials` - Passwords (mode 0600, never committed)
 
