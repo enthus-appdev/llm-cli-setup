@@ -108,7 +108,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 3. Preserves all your existing content outside the markers
 
 The documentation includes:
-- Command syntax and examples for sqlcmd, sql-env, gh, and atl
+- Command syntax and examples for sqlcmd, sql-env, gh, atl, and n8nctl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
