@@ -217,9 +217,15 @@ Or simply open a new terminal. You only need to do this once after installing th
 
 First-time users must run `atl auth setup` before `atl auth login`. This creates the OAuth app configuration.
 
-### Permission denied
+### Go binaries not in PATH
 
-Some operations require sudo. The script will prompt when needed.
+All Go-based tools (atl, n8nctl, grafanactl) install to `~/go/bin`. Add to your shell profile:
+
+```bash
+export PATH="$PATH:$HOME/go/bin"
+```
+
+The setup tool will detect binaries in common locations even if not in PATH, but adding to PATH makes commands easier to use.
 
 ## License
 
