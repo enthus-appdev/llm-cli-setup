@@ -4,7 +4,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## What This Does
 
-1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl)
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl
 2. **Configures sql-env**: Shell function to switch between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
@@ -14,6 +14,8 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 | **sql-env** | Shell function to switch between database environments |
 | **gh** | GitHub CLI for PR/issue management |
 | **atl** | Atlassian CLI for Jira/Confluence |
+| **n8nctl** | n8n workflow automation CLI |
+| **grafanactl** | Grafana CLI for dashboard/resource management |
 
 ## Quick Start
 
@@ -41,6 +43,8 @@ llm-cli-setup --full    # Run full setup
 llm-cli-setup --sql     # Configure SQL tools only
 llm-cli-setup --gh      # Configure GitHub CLI only
 llm-cli-setup --atl     # Configure Atlassian CLI only
+llm-cli-setup --n8n     # Configure n8n CLI only
+llm-cli-setup --grafana # Configure Grafana CLI only
 llm-cli-setup --llm     # Configure LLM tools only
 ```
 
@@ -105,6 +109,32 @@ atl issue list --assignee @me # List your issues
 atl confluence page search X  # Search Confluence
 ```
 
+### n8n CLI (n8nctl)
+
+Installs from [enthus-appdev/n8nctl](https://github.com/enthus-appdev/n8nctl) by default. Override with `N8N_CLI_REPO` env var if needed.
+
+```bash
+n8nctl config init            # Interactive setup
+n8nctl config list            # List configured instances
+n8nctl workflow list          # List workflows
+n8nctl workflow pull <id>     # Download workflow to file
+n8nctl workflow push file.json # Upload workflow
+n8nctl workflow run <id> -w   # Execute and wait
+```
+
+### Grafana CLI (grafanactl)
+
+Requires Grafana 12+. Installs via `go install` or binary download.
+
+```bash
+grafanactl config check              # Verify configuration
+grafanactl config use-context prod   # Switch context
+grafanactl resources list            # List resource types
+grafanactl resources get dashboards  # Get all dashboards
+grafanactl resources pull dashboards -o ./dashboards/  # Backup
+grafanactl resources push ./dashboards/                # Restore
+```
+
 ## LLM Configuration
 
 This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their config files.
@@ -124,7 +154,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 3. Preserves all your existing content outside the markers
 
 The documentation includes:
-- Command syntax and examples for sqlcmd, sql-env, gh, atl, and n8nctl
+- Command syntax and examples for sqlcmd, sql-env, gh, atl, n8nctl, and grafanactl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
@@ -146,7 +176,9 @@ llm-cli-setup/
 │   ├── installers/
 │   │   ├── sqlcmd.js       # sqlcmd + sql-env setup
 │   │   ├── gh.js           # GitHub CLI setup
-│   │   └── atl.js          # Atlassian CLI setup
+│   │   ├── atl.js          # Atlassian CLI setup
+│   │   ├── n8n.js          # n8n CLI setup
+│   │   └── grafanactl.js   # Grafana CLI setup
 │   ├── llm/
 │   │   └── index.js        # LLM configuration with block markers
 │   └── utils/

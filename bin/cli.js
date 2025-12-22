@@ -7,6 +7,7 @@ import { createRequire } from 'module';
 import { installSqlcmd, configureSqlEnv } from '../lib/installers/sqlcmd.js';
 import { configureGitHubCli } from '../lib/installers/gh.js';
 import { configureAtlassianCli } from '../lib/installers/atl.js';
+import { configureN8nCli } from '../lib/installers/n8n.js';
 import { configureGrafanaCli } from '../lib/installers/grafanactl.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
@@ -36,24 +37,28 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd + sql-env
-  console.log(chalk.cyan.bold('\n[1/5] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/6] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/5] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/6] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/5] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/6] Atlassian CLI'));
   await configureAtlassianCli();
 
-  // Step 4: Grafana CLI
-  console.log(chalk.cyan.bold('\n[4/5] Grafana CLI'));
+  // Step 4: n8n CLI
+  console.log(chalk.cyan.bold('\n[4/6] n8n CLI'));
+  await configureN8nCli();
+
+  // Step 5: Grafana CLI
+  console.log(chalk.cyan.bold('\n[5/6] Grafana CLI'));
   await configureGrafanaCli();
 
-  // Step 5: LLM Configuration
-  console.log(chalk.cyan.bold('\n[5/5] LLM Configuration'));
+  // Step 6: LLM Configuration
+  console.log(chalk.cyan.bold('\n[6/6] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -75,6 +80,7 @@ const runMenu = async () => {
         { name: '🗄️  Configure SQL tools (sqlcmd + sql-env)', value: 'sql' },
         { name: '🐙 Configure GitHub CLI', value: 'gh' },
         { name: '📋 Configure Atlassian CLI', value: 'atl' },
+        { name: '🔄 Configure n8n CLI', value: 'n8n' },
         { name: '📊 Configure Grafana CLI', value: 'grafana' },
         { name: '🤖 Configure AI assistants (Claude, Gemini, Cursor, Copilot...)', value: 'llm' },
         new inquirer.Separator(),
@@ -97,6 +103,9 @@ const runMenu = async () => {
       break;
     case 'atl':
       await configureAtlassianCli();
+      break;
+    case 'n8n':
+      await configureN8nCli();
       break;
     case 'grafana':
       await configureGrafanaCli();
@@ -146,6 +155,7 @@ const printSummary = () => {
   console.log(chalk.gray('  sqlcmd -Q "..."      # Run SQL query'));
   console.log(chalk.gray('  gh pr list           # List GitHub PRs'));
   console.log(chalk.gray('  atl issue list       # List Jira issues'));
+  console.log(chalk.gray('  n8nctl workflow list # List n8n workflows'));
   console.log(chalk.gray('  grafanactl resources list  # List Grafana resources'));
   console.log();
 };
@@ -166,6 +176,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --sql        Configure SQL tools only
   llm-cli-setup --gh         Configure GitHub CLI only
   llm-cli-setup --atl        Configure Atlassian CLI only
+  llm-cli-setup --n8n        Configure n8n CLI only
   llm-cli-setup --grafana    Configure Grafana CLI only
   llm-cli-setup --llm        Configure LLM tools only
 
@@ -186,6 +197,7 @@ ${chalk.bold('Options:')}
     sql: args.includes('--sql'),
     gh: args.includes('--gh'),
     atl: args.includes('--atl'),
+    n8n: args.includes('--n8n'),
     grafana: args.includes('--grafana'),
     llm: args.includes('--llm'),
   };
@@ -210,6 +222,8 @@ const main = async () => {
       await configureGitHubCli();
     } else if (args.atl) {
       await configureAtlassianCli();
+    } else if (args.n8n) {
+      await configureN8nCli();
     } else if (args.grafana) {
       await configureGrafanaCli();
     } else if (args.llm) {
