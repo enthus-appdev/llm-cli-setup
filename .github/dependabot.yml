@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+      time: "04:00"
+    labels:
+      - dependencies
+      - javascript
+    versioning-strategy: increase
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
