@@ -51,12 +51,11 @@ llm-cli-setup --llm     # Configure LLM tools only
 Switch between database environments with a single command:
 
 ```bash
-sql-env              # Show current environment
-sql-env local        # Local Docker (localhost,1433)
-sql-env dev          # Development server
-sql-env stage        # Staging server
-sql-env prod-ro      # Production read-only
-sql-env prod         # Production read-write (use with caution)
+sql-env              # Show current environment and list available
+sql-env <name>       # Switch to environment (e.g., sql-env dev)
+sql-env add          # Add a new environment (interactive prompts)
+sql-env remove <name> # Remove an environment
+sql-env list         # List all configured environments
 ```
 
 Then run queries without credentials:
@@ -66,7 +65,16 @@ sqlcmd -Q "SELECT @@VERSION"
 sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
 ```
 
-**Security**: Passwords are stored in `~/.sql-env-credentials` with mode 0600.
+**Adding environments after setup**: You can add new environments anytime without re-running the setup tool:
+
+```bash
+sql-env add my-custom-env
+# Prompts for: display name, server, username, password, database
+```
+
+**Files**:
+- `~/.sql-env.json` - Environment configuration (server, user, database)
+- `~/.sql-env-credentials` - Passwords (mode 0600, never committed)
 
 ### GitHub CLI (gh)
 
@@ -151,7 +159,14 @@ npm start     # Run the CLI
 
 ### sql-env: command not found
 
-Run `source ~/.bashrc` (or `source ~/.zshrc` for zsh) after setup, or restart your terminal.
+After initial setup, you need to reload your shell configuration:
+
+```bash
+source ~/.zshrc    # for zsh
+source ~/.bashrc   # for bash
+```
+
+Or simply open a new terminal. You only need to do this once after installing the function.
 
 ### atl installation fails
 
