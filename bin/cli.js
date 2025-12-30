@@ -22,14 +22,12 @@ const printHeader = () => {
   const boxWidth = 59; // Width between the two ║ characters
   const title = 'LLM CLI Setup';
   const version = `v${VERSION}`;
-
-  const titleLine = `   ${title}`.padEnd(boxWidth);
-  const versionLine = `   ${version}`.padEnd(boxWidth);
+  const prefix = '   ';
 
   console.log(chalk.cyan('╔═══════════════════════════════════════════════════════════╗'));
   console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
-  console.log(chalk.cyan('║') + titleLine.slice(0, 3) + chalk.white.bold(title) + ' '.repeat(boxWidth - 3 - title.length) + chalk.cyan('║'));
-  console.log(chalk.cyan('║') + versionLine.slice(0, 3) + chalk.gray(version) + ' '.repeat(boxWidth - 3 - version.length) + chalk.cyan('║'));
+  console.log(chalk.cyan('║') + prefix + chalk.white.bold(title) + ' '.repeat(boxWidth - prefix.length - title.length) + chalk.cyan('║'));
+  console.log(chalk.cyan('║') + prefix + chalk.gray(version) + ' '.repeat(boxWidth - prefix.length - version.length) + chalk.cyan('║'));
   console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
   console.log(chalk.cyan('╚═══════════════════════════════════════════════════════════╝'));
   console.log();
