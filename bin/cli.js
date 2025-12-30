@@ -19,14 +19,20 @@ const { version: VERSION } = require('../package.json');
  * Print header banner
  */
 const printHeader = () => {
-  console.log(chalk.cyan(`
-╔═══════════════════════════════════════════════════════════╗
-║                                                           ║
-║   ${chalk.white.bold('LLM CLI Setup')}                                       ║
-║   ${chalk.gray(`v${VERSION}`)}                                                ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝
-`));
+  const boxWidth = 59; // Width between the two ║ characters
+  const title = 'LLM CLI Setup';
+  const version = `v${VERSION}`;
+
+  const titleLine = `   ${title}`.padEnd(boxWidth);
+  const versionLine = `   ${version}`.padEnd(boxWidth);
+
+  console.log(chalk.cyan('╔═══════════════════════════════════════════════════════════╗'));
+  console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
+  console.log(chalk.cyan('║') + titleLine.slice(0, 3) + chalk.white.bold(title) + ' '.repeat(boxWidth - 3 - title.length) + chalk.cyan('║'));
+  console.log(chalk.cyan('║') + versionLine.slice(0, 3) + chalk.gray(version) + ' '.repeat(boxWidth - 3 - version.length) + chalk.cyan('║'));
+  console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
+  console.log(chalk.cyan('╚═══════════════════════════════════════════════════════════╝'));
+  console.log();
 };
 
 /**
