@@ -81,7 +81,7 @@ const runMenu = async () => {
       choices: [
         { name: '🚀 Full Setup (recommended for first-time users)', value: 'full' },
         new inquirer.Separator(),
-        { name: '🗄️  Configure SQL tools (sqlcmd + sql-env)', value: 'sql' },
+        { name: '🗄️  Configure SQL tools (sqlcmd contexts)', value: 'sql' },
         { name: '🐙 Configure GitHub CLI', value: 'gh' },
         { name: '📋 Configure Atlassian CLI', value: 'atl' },
         { name: '🔄 Configure n8n CLI', value: 'n8n' },
@@ -155,12 +155,12 @@ const printSummary = () => {
   console.log(chalk.gray('  (or restart your terminal)\n'));
 
   console.log(chalk.blue('Available commands:'));
-  console.log(chalk.gray('  sql-env              # Show/switch SQL environment'));
-  console.log(chalk.gray('  sqlcmd -Q "..."      # Run SQL query'));
-  console.log(chalk.gray('  gh pr list           # List GitHub PRs'));
-  console.log(chalk.gray('  atl issue list       # List Jira issues'));
-  console.log(chalk.gray('  n8nctl workflow list # List n8n workflows'));
-  console.log(chalk.gray('  grafanactl resources list  # List Grafana resources'));
+  console.log(chalk.gray('  sqlcmd config use-context <name>  # Switch SQL context'));
+  console.log(chalk.gray('  sqlcmd query -d <db> "..."        # Run SQL query'));
+  console.log(chalk.gray('  gh pr list                        # List GitHub PRs'));
+  console.log(chalk.gray('  atl issue list                    # List Jira issues'));
+  console.log(chalk.gray('  n8nctl workflow list              # List n8n workflows'));
+  console.log(chalk.gray('  grafanactl resources list         # List Grafana resources'));
   console.log();
 };
 

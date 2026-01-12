@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 This is a CLI tool (`llm-cli-setup`) that helps developers set up CLI tools and teaches their AI coding assistants how to use them. It installs and configures:
 
-- **sqlcmd + sql-env**: SQL Server CLI with environment switching
+- **sqlcmd**: SQL Server CLI with native context management
 - **gh**: GitHub CLI
 - **atl**: Atlassian CLI (Jira/Confluence)
 - **LLM configs**: Documentation injection for Claude Code, Gemini CLI, and Codex
@@ -25,7 +25,7 @@ npm link        # Link globally for testing
 - `bin/cli.js` - Main CLI with interactive menu and command-line args
 
 ### Installers (`lib/installers/`)
-- `sqlcmd.js` - sqlcmd installation + sql-env shell function
+- `sqlcmd.js` - go-sqlcmd installation + context configuration
 - `gh.js` - GitHub CLI installation and authentication
 - `atl.js` - Atlassian CLI installation (requires ATL_CLI_REPO env var)
 
@@ -39,12 +39,11 @@ npm link        # Link globally for testing
 ## Key Patterns
 
 ### Block Markers
-Configuration is injected between markers for safe updates (preserves user content):
-- LLM configs: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
-- Shell profile: `# === SQL Environment Switcher ===` ... `# === End SQL Environment Switcher ===`
+LLM config is injected between markers for safe updates (preserves user content):
+- `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
 
-### Credentials Security
-SQL passwords stored in `~/.sql-env-credentials` with mode 0600, separate from shell profile.
+### sqlcmd Contexts
+Uses native go-sqlcmd config management (`~/.sqlcmd/sqlconfig`). No shell functions needed.
 
 ### Configurable Repositories
 atl-cli repo must be configured via `ATL_CLI_REPO` environment variable.
