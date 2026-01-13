@@ -40,7 +40,7 @@ const runFullSetup = async () => {
   console.log(chalk.blue('Running full setup...\n'));
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
-  // Step 1: sqlcmd + sql-env
+  // Step 1: sqlcmd
   console.log(chalk.cyan.bold('\n[1/6] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();

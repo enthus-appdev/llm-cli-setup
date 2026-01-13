@@ -5,13 +5,12 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 ## What This Does
 
 1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl
-2. **Configures sql-env**: Shell function to switch between database environments
+2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
 | Tool | Purpose |
 |------|---------|
-| **sqlcmd** | Microsoft SQL Server command-line tool |
-| **sql-env** | Shell function to switch between database environments |
+| **sqlcmd** | Microsoft SQL Server command-line tool with context management |
 | **gh** | GitHub CLI for PR/issue management |
 | **atl** | Atlassian CLI for Jira/Confluence |
 | **n8nctl** | n8n workflow automation CLI |
@@ -50,43 +49,26 @@ llm-cli-setup --llm     # Configure LLM tools only
 
 ## Tools Configured
 
-### sql-env (SQL Environment Switcher)
+### sqlcmd (SQL Server CLI)
 
-Switch between database environments with a single command:
-
-```bash
-sql-env              # Show current environment and list available
-sql-env <name>       # Switch to environment (e.g., sql-env dev)
-sql-env add          # Add a new environment (interactive prompts)
-sql-env remove <name> # Remove an environment
-sql-env list         # List all configured environments
-```
-
-Then run queries without credentials:
+Switch between database contexts with native sqlcmd config:
 
 ```bash
-sqlcmd -Q "SELECT @@VERSION"
-sqlcmd -d MyDatabase -Q "SELECT TOP 10 * FROM Users"
+sqlcmd config current-context        # Show current context
+sqlcmd config use-context <name>     # Switch context (e.g., sqlcmd config use-context dev)
+sqlcmd config get-contexts           # List all configured contexts
 ```
 
-**Adding environments after setup**: You can add new environments anytime without re-running the setup tool:
+Then run queries:
 
 ```bash
-sql-env add my-custom-env
-# Prompts for: display name, server, username, password, database, read-only mode
+sqlcmd query "SELECT @@VERSION"
+sqlcmd query -d MyDatabase "SELECT TOP 10 * FROM Users"
 ```
 
-**Read-only mode**: When enabled for an environment, sqlcmd automatically uses `-K ReadOnly` (ApplicationIntent=ReadOnly). This prevents accidental writes to production databases without needing separate read-only database users.
+**Adding contexts after setup**: You can add new contexts anytime using the setup tool or manually edit `~/.sqlcmd/sqlconfig`.
 
-```bash
-sql-env prod-ro              # Switches and shows [READ-ONLY]
-sqlcmd -Q "SELECT 1"         # Automatically adds -K ReadOnly
-```
-
-**Files**:
-- `~/.sql-env/sql-env.sh` - Shell script (sourced from profile)
-- `~/.sql-env.json` - Environment configuration (server, user, database, readonly)
-- `~/.sql-env-credentials` - Passwords (mode 0600, never committed)
+**Config file**: `~/.sqlcmd/sqlconfig` (YAML format, managed by go-sqlcmd)
 
 ### GitHub CLI (gh)
 
@@ -154,7 +136,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 3. Preserves all your existing content outside the markers
 
 The documentation includes:
-- Command syntax and examples for sqlcmd, sql-env, gh, atl, n8nctl, and grafanactl
+- Command syntax and examples for sqlcmd, gh, atl, n8nctl, and grafanactl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
@@ -174,7 +156,7 @@ llm-cli-setup/
 │   └── cli.js              # Main entry point
 ├── lib/
 │   ├── installers/
-│   │   ├── sqlcmd.js       # sqlcmd + sql-env setup
+│   │   ├── sqlcmd.js       # sqlcmd setup with context management
 │   │   ├── gh.js           # GitHub CLI setup
 │   │   ├── atl.js          # Atlassian CLI setup
 │   │   ├── n8n.js          # n8n CLI setup
@@ -196,17 +178,6 @@ npm start     # Run the CLI
 ```
 
 ## Troubleshooting
-
-### sql-env: command not found
-
-After initial setup, you need to reload your shell configuration:
-
-```bash
-source ~/.zshrc    # for zsh
-source ~/.bashrc   # for bash
-```
-
-Or simply open a new terminal. You only need to do this once after installing the function.
 
 ### atl installation fails
 
