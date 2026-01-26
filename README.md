@@ -8,13 +8,13 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
-| Tool | Purpose |
-|------|---------|
-| **sqlcmd** | Microsoft SQL Server command-line tool with context management |
-| **gh** | GitHub CLI for PR/issue management |
-| **atl** | Atlassian CLI for Jira/Confluence |
-| **n8nctl** | n8n workflow automation CLI |
-| **grafanactl** | Grafana CLI for dashboard/resource management |
+| Tool           | Purpose                                                        |
+| -------------- | -------------------------------------------------------------- |
+| **sqlcmd**     | Microsoft SQL Server command-line tool with context management |
+| **gh**         | GitHub CLI for PR/issue management                             |
+| **atl**        | Atlassian CLI for Jira/Confluence                              |
+| **n8nctl**     | n8n workflow automation CLI                                    |
+| **grafanactl** | Grafana CLI for dashboard/resource management                  |
 
 ## Quick Start
 
@@ -123,11 +123,11 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 
 ### Supported AI Tools
 
-| AI Tool | Config Location |
-|---------|-----------------|
-| Claude Code | `~/.claude/CLAUDE.md` |
-| Gemini CLI | `~/.gemini/GEMINI.md` |
-| OpenAI Codex CLI | `~/.codex/CODEX.md` |
+| AI Tool          | Config Location       |
+| ---------------- | --------------------- |
+| Claude Code      | `~/.claude/CLAUDE.md` |
+| Gemini CLI       | `~/.gemini/GEMINI.md` |
+| OpenAI Codex CLI | `~/.codex/CODEX.md`   |
 
 ### How It Works
 
@@ -136,6 +136,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 3. Preserves all your existing content outside the markers
 
 The documentation includes:
+
 - Command syntax and examples for sqlcmd, gh, atl, n8nctl, and grafanactl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
