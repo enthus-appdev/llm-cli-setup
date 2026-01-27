@@ -22,30 +22,38 @@ npm link        # Link globally for testing
 ## Architecture
 
 ### Entry Point
+
 - `bin/cli.js` - Main CLI with interactive menu and command-line args
 
 ### Installers (`lib/installers/`)
+
 - `sqlcmd.js` - go-sqlcmd installation + context configuration
 - `gh.js` - GitHub CLI installation and authentication
 - `atl.js` - Atlassian CLI installation (requires ATL_CLI_REPO env var)
 
 ### LLM Configuration (`lib/llm/`)
+
 - `index.js` - Injects CLI documentation into LLM config files using block markers
 
 ### Utilities (`lib/utils/`)
+
 - `platform.js` - Package manager detection, command execution
 - `shell.js` - Shell profile detection, block marker operations, file utilities
 
 ## Key Patterns
 
 ### Block Markers
+
 LLM config is injected between markers for safe updates (preserves user content):
+
 - `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
 
 ### sqlcmd Contexts
+
 Uses native go-sqlcmd config management (`~/.sqlcmd/sqlconfig`). No shell functions needed.
 
 ### Configurable Repositories
+
 atl-cli repo must be configured via `ATL_CLI_REPO` environment variable.
 
 ## Adding Support for New LLMs
