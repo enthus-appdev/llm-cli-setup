@@ -16,7 +16,8 @@
   "scripts": {
     "start": "node bin/cli.js",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check-format": "prettier --check ."
   },
   "author": "",
   "license": "MIT",

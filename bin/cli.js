@@ -26,8 +26,20 @@ const printHeader = () => {
 
   console.log(chalk.cyan('╔' + '═'.repeat(boxWidth) + '╗'));
   console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
-  console.log(chalk.cyan('║') + prefix + chalk.white.bold(title) + ' '.repeat(boxWidth - prefix.length - title.length) + chalk.cyan('║'));
-  console.log(chalk.cyan('║') + prefix + chalk.gray(version) + ' '.repeat(boxWidth - prefix.length - version.length) + chalk.cyan('║'));
+  console.log(
+    chalk.cyan('║') +
+      prefix +
+      chalk.white.bold(title) +
+      ' '.repeat(boxWidth - prefix.length - title.length) +
+      chalk.cyan('║')
+  );
+  console.log(
+    chalk.cyan('║') +
+      prefix +
+      chalk.gray(version) +
+      ' '.repeat(boxWidth - prefix.length - version.length) +
+      chalk.cyan('║')
+  );
   console.log(chalk.cyan('║') + ' '.repeat(boxWidth) + chalk.cyan('║'));
   console.log(chalk.cyan('╚' + '═'.repeat(boxWidth) + '╝'));
   console.log();
