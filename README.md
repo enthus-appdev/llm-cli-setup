@@ -4,7 +4,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## What This Does
 
-1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
@@ -15,6 +15,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 | **atl**        | Atlassian CLI for Jira/Confluence                              |
 | **n8nctl**     | n8n workflow automation CLI                                    |
 | **grafanactl** | Grafana CLI for dashboard/resource management                  |
+| **logcli**     | Loki CLI for querying Grafana Loki logs                        |
 
 ## Quick Start
 
@@ -44,6 +45,7 @@ llm-cli-setup --gh      # Configure GitHub CLI only
 llm-cli-setup --atl     # Configure Atlassian CLI only
 llm-cli-setup --n8n     # Configure n8n CLI only
 llm-cli-setup --grafana # Configure Grafana CLI only
+llm-cli-setup --logcli  # Configure Loki CLI only
 llm-cli-setup --llm     # Configure LLM tools only
 ```
 
@@ -117,6 +119,20 @@ grafanactl resources pull dashboards -o ./dashboards/  # Backup
 grafanactl resources push ./dashboards/                # Restore
 ```
 
+### Loki CLI (logcli)
+
+Installs from [grafana/loki](https://github.com/grafana/loki) GitHub releases.
+
+```bash
+# Set up environment variables
+export LOKI_ADDR="<GRAFANA_URL>/api/datasources/proxy/<DATASOURCE_ID>"
+export LOKI_BEARER_TOKEN="<GRAFANA_TOKEN>"
+
+# Query logs
+logcli labels k8s_deployment_name
+logcli query '{k8s_deployment_name="myapp"}' --limit=20 --since=1h
+```
+
 ## LLM Configuration
 
 This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their config files.
@@ -137,7 +153,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 
 The documentation includes:
 
-- Command syntax and examples for sqlcmd, gh, atl, n8nctl, and grafanactl
+- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, and logcli
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
@@ -161,7 +177,8 @@ llm-cli-setup/
 │   │   ├── gh.js           # GitHub CLI setup
 │   │   ├── atl.js          # Atlassian CLI setup
 │   │   ├── n8n.js          # n8n CLI setup
-│   │   └── grafanactl.js   # Grafana CLI setup
+│   │   ├── grafanactl.js   # Grafana CLI setup
+│   │   └── logcli.js      # Loki CLI setup
 │   ├── llm/
 │   │   └── index.js        # LLM configuration with block markers
 │   └── utils/
