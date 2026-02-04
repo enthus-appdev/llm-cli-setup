@@ -10,6 +10,7 @@ import { configureAtlassianCli } from '../lib/installers/atl.js';
 import { configureN8nCli } from '../lib/installers/n8n.js';
 import { configureGrafanaCli } from '../lib/installers/grafanactl.js';
 import { configureLogcli } from '../lib/installers/logcli.js';
+import { configureM365Cli } from '../lib/installers/m365.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
@@ -54,32 +55,36 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd
-  console.log(chalk.cyan.bold('\n[1/7] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/8] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/7] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/8] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/7] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/8] Atlassian CLI'));
   await configureAtlassianCli();
 
   // Step 4: n8n CLI
-  console.log(chalk.cyan.bold('\n[4/7] n8n CLI'));
+  console.log(chalk.cyan.bold('\n[4/8] n8n CLI'));
   await configureN8nCli();
 
   // Step 5: Grafana CLI
-  console.log(chalk.cyan.bold('\n[5/7] Grafana CLI'));
+  console.log(chalk.cyan.bold('\n[5/8] Grafana CLI'));
   await configureGrafanaCli();
 
   // Step 6: Loki CLI
-  console.log(chalk.cyan.bold('\n[6/7] Loki CLI'));
+  console.log(chalk.cyan.bold('\n[6/8] Loki CLI'));
   await configureLogcli();
 
-  // Step 7: LLM Configuration
-  console.log(chalk.cyan.bold('\n[7/7] LLM Configuration'));
+  // Step 7: Microsoft 365 CLI
+  console.log(chalk.cyan.bold('\n[7/8] Microsoft 365 CLI'));
+  await configureM365Cli();
+
+  // Step 8: LLM Configuration
+  console.log(chalk.cyan.bold('\n[8/8] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -104,6 +109,7 @@ const runMenu = async () => {
         { name: '🔄 Configure n8n CLI', value: 'n8n' },
         { name: '📊 Configure Grafana CLI', value: 'grafana' },
         { name: '📜 Configure Loki CLI (logcli)', value: 'logcli' },
+        { name: '☁️  Configure Microsoft 365 CLI', value: 'm365' },
         { name: '🤖 Configure AI assistants (Claude, Gemini, Cursor, Copilot...)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
@@ -134,6 +140,9 @@ const runMenu = async () => {
       break;
     case 'logcli':
       await configureLogcli();
+      break;
+    case 'm365':
+      await configureM365Cli();
       break;
     case 'llm':
       await configureLlmTools();
@@ -183,6 +192,7 @@ const printSummary = () => {
   console.log(chalk.gray('  n8nctl workflow list              # List n8n workflows'));
   console.log(chalk.gray('  grafanactl resources list         # List Grafana resources'));
   console.log(chalk.gray('  logcli query \'{app="myapp"}\'      # Query Loki logs'));
+  console.log(chalk.gray('  m365 spo site list                # List SharePoint sites'));
   console.log();
 };
 
@@ -205,6 +215,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --n8n        Configure n8n CLI only
   llm-cli-setup --grafana    Configure Grafana CLI only
   llm-cli-setup --logcli     Configure Loki CLI only
+  llm-cli-setup --m365       Configure Microsoft 365 CLI only
   llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
@@ -227,6 +238,7 @@ ${chalk.bold('Options:')}
     n8n: args.includes('--n8n'),
     grafana: args.includes('--grafana'),
     logcli: args.includes('--logcli'),
+    m365: args.includes('--m365'),
     llm: args.includes('--llm'),
   };
 };
@@ -256,6 +268,8 @@ const main = async () => {
       await configureGrafanaCli();
     } else if (args.logcli) {
       await configureLogcli();
+    } else if (args.m365) {
+      await configureM365Cli();
     } else if (args.llm) {
       await configureLlmTools();
     } else {
