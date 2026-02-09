@@ -20,7 +20,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 ## Quick Start
 
 ```bash
-git clone https://github.com/your-org/llm-cli-setup.git
+git clone https://github.com/enthus-appdev/llm-cli-setup.git
 cd llm-cli-setup
 npm install
 npm start
@@ -95,7 +95,7 @@ atl confluence page search X  # Search Confluence
 
 ### n8n CLI (n8nctl)
 
-Installs from [enthus-appdev/n8nctl](https://github.com/enthus-appdev/n8nctl) by default. Override with `N8N_CLI_REPO` env var if needed.
+Installs from [enthus-appdev/n8n-cli](https://github.com/enthus-appdev/n8n-cli) by default. Override with `N8N_CLI_REPO` env var if needed.
 
 ```bash
 n8nctl config init            # Interactive setup
