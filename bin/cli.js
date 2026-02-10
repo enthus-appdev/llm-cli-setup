@@ -11,6 +11,7 @@ import { configureN8nCli } from '../lib/installers/n8n.js';
 import { configureGrafanaCli } from '../lib/installers/grafanactl.js';
 import { configureLogcli } from '../lib/installers/logcli.js';
 import { configureM365Cli } from '../lib/installers/m365.js';
+import { configureEsqCli } from '../lib/installers/esq.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
@@ -80,11 +81,15 @@ const runFullSetup = async () => {
   await configureLogcli();
 
   // Step 7: Microsoft 365 CLI
-  console.log(chalk.cyan.bold('\n[7/8] Microsoft 365 CLI'));
+  console.log(chalk.cyan.bold('\n[7/9] Microsoft 365 CLI'));
   await configureM365Cli();
 
-  // Step 8: LLM Configuration
-  console.log(chalk.cyan.bold('\n[8/8] LLM Configuration'));
+  // Step 8: Elasticsearch Query CLI
+  console.log(chalk.cyan.bold('\n[8/9] Elasticsearch Query CLI'));
+  await configureEsqCli();
+
+  // Step 9: LLM Configuration
+  console.log(chalk.cyan.bold('\n[9/9] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -110,6 +115,7 @@ const runMenu = async () => {
         { name: '📊 Configure Grafana CLI', value: 'grafana' },
         { name: '📜 Configure Loki CLI (logcli)', value: 'logcli' },
         { name: '☁️  Configure Microsoft 365 CLI', value: 'm365' },
+        { name: '🔍 Configure Elasticsearch CLI (esq)', value: 'esq' },
         { name: '🤖 Configure AI assistants (Claude, Gemini, Cursor, Copilot...)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
@@ -143,6 +149,9 @@ const runMenu = async () => {
       break;
     case 'm365':
       await configureM365Cli();
+      break;
+    case 'esq':
+      await configureEsqCli();
       break;
     case 'llm':
       await configureLlmTools();
@@ -193,6 +202,7 @@ const printSummary = () => {
   console.log(chalk.gray('  grafanactl resources list         # List Grafana resources'));
   console.log(chalk.gray('  logcli query \'{app="myapp"}\'      # Query Loki logs'));
   console.log(chalk.gray('  m365 spo site list                # List SharePoint sites'));
+  console.log(chalk.gray('  esq search documents "query"      # Search Elasticsearch'));
   console.log();
 };
 
@@ -216,6 +226,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --grafana    Configure Grafana CLI only
   llm-cli-setup --logcli     Configure Loki CLI only
   llm-cli-setup --m365       Configure Microsoft 365 CLI only
+  llm-cli-setup --esq        Configure Elasticsearch CLI only
   llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
@@ -239,6 +250,7 @@ ${chalk.bold('Options:')}
     grafana: args.includes('--grafana'),
     logcli: args.includes('--logcli'),
     m365: args.includes('--m365'),
+    esq: args.includes('--esq'),
     llm: args.includes('--llm'),
   };
 };
@@ -270,6 +282,8 @@ const main = async () => {
       await configureLogcli();
     } else if (args.m365) {
       await configureM365Cli();
+    } else if (args.esq) {
+      await configureEsqCli();
     } else if (args.llm) {
       await configureLlmTools();
     } else {
