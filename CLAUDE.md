@@ -13,9 +13,9 @@ This file provides guidance to Claude Code when working with this repository.
 
 This project has **two separate entry points** that BOTH need updating when adding features:
 
-| File | Purpose | Who uses it |
-|------|---------|-------------|
-| `bin/cli.js` | Standalone CLI menu, `--flags`, step counter | Developers running `npm start` or `llm-cli-setup` directly |
+| File           | Purpose                                                                   | Who uses it                                                                 |
+| -------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `bin/cli.js`   | Standalone CLI menu, `--flags`, step counter                              | Developers running `npm start` or `llm-cli-setup` directly                  |
 | `lib/index.js` | Library exports, `configureShellEnv()`, `CLI_TOOLS` array, status display | `environment-setup` via `import { configureShellEnv } from 'llm-cli-setup'` |
 
 **`lib/index.js` contains `configureShellEnv()`** which is what environment-setup calls. This function has its own `CLI_TOOLS` array with status checks, configure functions, and the tool selection menu. This is SEPARATE from `bin/cli.js`.
@@ -31,12 +31,14 @@ npm link        # Link globally for testing (use in environment-setup: npm link 
 ## Architecture
 
 ### Standalone CLI (`bin/cli.js`)
+
 - Interactive menu with tool selection
 - `--flag` shortcuts (e.g., `--sql`, `--gh`, `--esq`)
 - Full setup wizard with step counter
 - Imports individual configure functions from `lib/installers/`
 
 ### Library Entry Point (`lib/index.js`)
+
 - Re-exports all installer functions, status checks, and utilities
 - Contains `configureShellEnv()` - the main function environment-setup calls
 - Contains `CLI_TOOLS` array - defines tool status display and selection menu
@@ -45,6 +47,7 @@ npm link        # Link globally for testing (use in environment-setup: npm link 
 ### Installers (`lib/installers/`)
 
 Each tool has its own module following the same pattern:
+
 - `findBinary()` - locate installed binary (PATH + common locations)
 - `is*Installed()` / `is*Configured()` - status checks
 - `install*()` - installation via `go install` or package manager
@@ -53,11 +56,13 @@ Each tool has its own module following the same pattern:
 Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `grafanactl.js`, `logcli.js`, `m365.js`, `esq.js`
 
 ### LLM Configuration (`lib/llm/index.js`)
+
 - `CLI_TOOLS_DOCS` - markdown documentation for all CLI tools (injected into LLM configs)
 - `configureLlmTools()` - injects docs into `~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md`, `~/.codex/CODEX.md`
 - Uses block markers: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
 
 ### Utilities (`lib/utils/`)
+
 - `platform.js` - package manager detection, command execution
 - `shell.js` - shell profile detection, block marker operations, file utilities
 
@@ -82,10 +87,13 @@ Missing any of these (especially `lib/index.js`) will cause the tool to not appe
 ## Key Patterns
 
 ### Private Go Repos
+
 Tools installed via `go install` from private repos (atl, n8n, esq) need:
+
 - `GOPRIVATE=github.com/enthus-appdev/*`
 - Git SSH config: `url."git@github.com:".insteadOf "https://github.com/"`
 - Repo configurable via env var (e.g., `ESQ_CLI_REPO`)
 
 ### Block Markers
+
 LLM config is injected between HTML comment markers for safe updates. Environment-setup uses a SEPARATE marker pair (`<!-- === NegSoft CLI Tools === -->`) for internal content.
