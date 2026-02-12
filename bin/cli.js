@@ -56,28 +56,28 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd
-  console.log(chalk.cyan.bold('\n[1/8] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/9] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/8] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/9] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/8] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/9] Atlassian CLI'));
   await configureAtlassianCli();
 
   // Step 4: n8n CLI
-  console.log(chalk.cyan.bold('\n[4/8] n8n CLI'));
+  console.log(chalk.cyan.bold('\n[4/9] n8n CLI'));
   await configureN8nCli();
 
   // Step 5: Grafana CLI
-  console.log(chalk.cyan.bold('\n[5/8] Grafana CLI'));
+  console.log(chalk.cyan.bold('\n[5/9] Grafana CLI'));
   await configureGrafanaCli();
 
   // Step 6: Loki CLI
-  console.log(chalk.cyan.bold('\n[6/8] Loki CLI'));
+  console.log(chalk.cyan.bold('\n[6/9] Loki CLI'));
   await configureLogcli();
 
   // Step 7: Microsoft 365 CLI

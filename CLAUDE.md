@@ -88,4 +88,4 @@ Tools installed via `go install` from private repos (atl, n8n, esq) need:
 - Repo configurable via env var (e.g., `ESQ_CLI_REPO`)
 
 ### Block Markers
-LLM config is injected between HTML comment markers for safe updates. Environment-setup uses a SEPARATE marker pair (`<!-- === NegSoft CLI Tools === -->`) for internal content.
+LLM config is injected between HTML comment markers for safe updates. Consuming packages (e.g., environment-setup) may use their own SEPARATE marker pair for additional internal content.

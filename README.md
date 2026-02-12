@@ -4,7 +4,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## What This Does
 
-1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli, m365, esq
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
@@ -16,6 +16,18 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 | **n8nctl**     | n8n workflow automation CLI                                    |
 | **grafanactl** | Grafana CLI for dashboard/resource management                  |
 | **logcli**     | Loki CLI for querying Grafana Loki logs                        |
+| **m365**       | Microsoft 365 CLI for SharePoint/Teams/OneDrive management     |
+| **esq**        | Elasticsearch Query CLI for cross-environment cluster queries  |
+
+## Repository Overrides
+
+Some Go-based tools (atl, n8nctl, esq) default to installing from `enthus-appdev/*` repositories. If you're using your own forks or public versions, set these environment variables before running setup:
+
+```bash
+export ATL_CLI_REPO="your-org/atl-cli"       # Default: enthus-appdev/atl-cli
+export N8N_CLI_REPO="your-org/n8n-cli"       # Default: enthus-appdev/n8n-cli
+export ESQ_CLI_REPO="your-org/esq-cli"       # Default: enthus-appdev/esq-cli
+```
 
 ## Quick Start
 
@@ -46,6 +58,8 @@ llm-cli-setup --atl     # Configure Atlassian CLI only
 llm-cli-setup --n8n     # Configure n8n CLI only
 llm-cli-setup --grafana # Configure Grafana CLI only
 llm-cli-setup --logcli  # Configure Loki CLI only
+llm-cli-setup --m365    # Configure Microsoft 365 CLI only
+llm-cli-setup --esq     # Configure Elasticsearch CLI only
 llm-cli-setup --llm     # Configure LLM tools only
 ```
 
@@ -133,6 +147,28 @@ logcli labels k8s_deployment_name
 logcli query '{k8s_deployment_name="myapp"}' --limit=20 --since=1h
 ```
 
+### Microsoft 365 CLI (m365)
+
+Installs via npm from [pnp/cli-microsoft365](https://github.com/pnp/cli-microsoft365).
+
+```bash
+m365 login                        # Login with device code flow
+m365 status                       # Check authentication status
+m365 spo site list                # List SharePoint sites
+m365 spo file list --webUrl <url> --folder "Shared Documents"
+```
+
+### Elasticsearch Query CLI (esq)
+
+Installs from [enthus-appdev/esq-cli](https://github.com/enthus-appdev/esq-cli) by default. Override with `ESQ_CLI_REPO` env var if needed.
+
+```bash
+esq config add prod --url <url>   # Add environment
+esq config use prod               # Switch environment
+esq search documents "query"      # Search with Lucene syntax
+esq health                        # Cluster health
+```
+
 ## LLM Configuration
 
 This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their config files.
@@ -153,7 +189,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 
 The documentation includes:
 
-- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, and logcli
+- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, and esq
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
@@ -172,13 +208,17 @@ llm-cli-setup/
 ├── bin/
 │   └── cli.js              # Main entry point
 ├── lib/
+│   ├── index.js            # Library entry point (exports for environment-setup)
 │   ├── installers/
+│   │   ├── index.js        # Installer exports
 │   │   ├── sqlcmd.js       # sqlcmd setup with context management
 │   │   ├── gh.js           # GitHub CLI setup
 │   │   ├── atl.js          # Atlassian CLI setup
 │   │   ├── n8n.js          # n8n CLI setup
 │   │   ├── grafanactl.js   # Grafana CLI setup
-│   │   └── logcli.js      # Loki CLI setup
+│   │   ├── logcli.js       # Loki CLI setup
+│   │   ├── m365.js         # Microsoft 365 CLI setup
+│   │   └── esq.js          # Elasticsearch Query CLI setup
 │   ├── llm/
 │   │   └── index.js        # LLM configuration with block markers
 │   └── utils/
