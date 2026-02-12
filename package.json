@@ -1,7 +1,7 @@
 {
   "name": "llm-cli-setup",
   "version": "1.0.0",
-  "description": "CLI tools setup with LLM integration - sqlcmd, GitHub CLI, Atlassian CLI with Claude Code and Codex configuration",
+  "description": "CLI tools setup with LLM integration - installs and configures sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, and esq with Claude Code, Gemini CLI, and Codex support",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
@@ -19,11 +19,11 @@
     "format": "prettier --write .",
     "check-format": "prettier --check ."
   },
-  "author": "",
+  "author": "enthus GmbH",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/enthus-appdev/llm-cli-setup.git"
   },
   "engines": {
     "node": ">=18.0.0"

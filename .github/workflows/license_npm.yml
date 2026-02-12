@@ -30,7 +30,7 @@ jobs:
       - name: Check licenses
         run: >
           npx license-checker-rseidelsohn
-          --failOn="${{ vars.FORBIDDEN_LICENSES }}"
+          --failOn="${{ vars.FORBIDDEN_LICENSES || 'UNLICENSED' }}"
           --excludePrivatePackages
           --markdown
           >> $GITHUB_STEP_SUMMARY
