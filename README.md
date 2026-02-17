@@ -4,7 +4,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## What This Does
 
-1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli, m365, esq
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli, m365, esq, discordctl
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
 
@@ -18,6 +18,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 | **logcli**     | Loki CLI for querying Grafana Loki logs                        |
 | **m365**       | Microsoft 365 CLI for SharePoint/Teams/OneDrive management     |
 | **esq**        | Elasticsearch Query CLI for cross-environment cluster queries  |
+| **discordctl** | Discord CLI for REST API interactions (messages, reactions)    |
 
 ## Repository Overrides
 
