@@ -222,7 +222,8 @@ llm-cli-setup/
 │   │   ├── grafanactl.js   # Grafana CLI setup
 │   │   ├── logcli.js       # Loki CLI setup
 │   │   ├── m365.js         # Microsoft 365 CLI setup
-│   │   └── esq.js          # Elasticsearch Query CLI setup
+│   │   ├── esq.js          # Elasticsearch Query CLI setup
+│   │   └── discord.js      # Discord CLI setup
 │   ├── llm/
 │   │   └── index.js        # LLM configuration with block markers
 │   └── utils/
