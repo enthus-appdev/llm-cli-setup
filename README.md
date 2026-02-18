@@ -119,6 +119,9 @@ n8nctl workflow list          # List workflows
 n8nctl workflow pull <id>     # Download workflow to file
 n8nctl workflow push file.json # Upload workflow
 n8nctl workflow run <id> -w   # Execute and wait
+n8nctl workflow run <id> --webhook <path>  # Trigger via webhook
+n8nctl variable list          # List variables
+n8nctl variable create k --value 'v'  # Create (--value avoids shell expansion)
 ```
 
 ### Grafana CLI (grafanactl)
