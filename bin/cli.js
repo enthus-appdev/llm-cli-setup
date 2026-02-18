@@ -191,19 +191,7 @@ const printSummary = () => {
 
   console.log(chalk.yellow('To apply shell changes, run:'));
   console.log(chalk.white(`  source ${profilePath}`));
-  console.log(chalk.gray('  (or restart your terminal)\n'));
-
-  console.log(chalk.blue('Available commands:'));
-  console.log(chalk.gray('  sqlcmd config use-context <name>  # Switch SQL context'));
-  console.log(chalk.gray('  sqlcmd query -d <db> "..."        # Run SQL query'));
-  console.log(chalk.gray('  gh pr list                        # List GitHub PRs'));
-  console.log(chalk.gray('  atl issue list                    # List Jira issues'));
-  console.log(chalk.gray('  n8nctl workflow list              # List n8n workflows'));
-  console.log(chalk.gray('  grafanactl resources list         # List Grafana resources'));
-  console.log(chalk.gray('  logcli query \'{app="myapp"}\'      # Query Loki logs'));
-  console.log(chalk.gray('  m365 spo site list                # List SharePoint sites'));
-  console.log(chalk.gray('  esq search documents "query"      # Search Elasticsearch'));
-  console.log();
+  console.log(chalk.gray('  (or restart your terminal)'));
 };
 
 /**
