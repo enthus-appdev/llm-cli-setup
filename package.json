@@ -24,6 +24,10 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "files": [
+    "bin",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/enthus-appdev/llm-cli-setup.git"
