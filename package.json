@@ -1,5 +1,5 @@
 {
-  "name": "llm-cli-setup",
+  "name": "@enthus-appdev/llm-cli-setup",
   "version": "1.1.1",
   "description": "CLI tools setup with LLM integration - installs and configures sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, and esq with Claude Code, Gemini CLI, and Codex support",
   "type": "module",
@@ -21,6 +21,9 @@
   },
   "author": "enthus GmbH",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/enthus-appdev/llm-cli-setup.git"
