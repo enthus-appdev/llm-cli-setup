@@ -1,4 +1,4 @@
-name: License Node
+name: License NPM
 
 on:
   push:
