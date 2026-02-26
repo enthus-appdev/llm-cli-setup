@@ -17,7 +17,7 @@ jobs:
   license-check:
     runs-on: ubuntu-latest
     name: License Check
-    if: github.event_name != 'pull_request' || (!github.event.pull_request.draft && !contains(github.event.pull_request.title, 'WIP'))
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     steps:
       - name: Checkout
         uses: actions/checkout@v6
