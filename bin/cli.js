@@ -13,6 +13,7 @@ import { configureLogcli } from '../lib/installers/logcli.js';
 import { configureM365Cli } from '../lib/installers/m365.js';
 import { configureEsqCli } from '../lib/installers/esq.js';
 import { configureDiscordCli } from '../lib/installers/discord.js';
+import { configurePlaywright } from '../lib/installers/playwright.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
@@ -57,44 +58,48 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd
-  console.log(chalk.cyan.bold('\n[1/10] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/11] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/10] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/11] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/10] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/11] Atlassian CLI'));
   await configureAtlassianCli();
 
   // Step 4: n8n CLI
-  console.log(chalk.cyan.bold('\n[4/10] n8n CLI'));
+  console.log(chalk.cyan.bold('\n[4/11] n8n CLI'));
   await configureN8nCli();
 
   // Step 5: Grafana CLI
-  console.log(chalk.cyan.bold('\n[5/10] Grafana CLI'));
+  console.log(chalk.cyan.bold('\n[5/11] Grafana CLI'));
   await configureGrafanaCli();
 
   // Step 6: Loki CLI
-  console.log(chalk.cyan.bold('\n[6/10] Loki CLI'));
+  console.log(chalk.cyan.bold('\n[6/11] Loki CLI'));
   await configureLogcli();
 
   // Step 7: Microsoft 365 CLI
-  console.log(chalk.cyan.bold('\n[7/10] Microsoft 365 CLI'));
+  console.log(chalk.cyan.bold('\n[7/11] Microsoft 365 CLI'));
   await configureM365Cli();
 
   // Step 8: Elasticsearch Query CLI
-  console.log(chalk.cyan.bold('\n[8/10] Elasticsearch Query CLI'));
+  console.log(chalk.cyan.bold('\n[8/11] Elasticsearch Query CLI'));
   await configureEsqCli();
 
   // Step 9: Discord CLI
-  console.log(chalk.cyan.bold('\n[9/10] Discord CLI'));
+  console.log(chalk.cyan.bold('\n[9/11] Discord CLI'));
   await configureDiscordCli();
 
-  // Step 10: LLM Configuration
-  console.log(chalk.cyan.bold('\n[10/10] LLM Configuration'));
+  // Step 10: Playwright
+  console.log(chalk.cyan.bold('\n[10/11] Playwright'));
+  await configurePlaywright();
+
+  // Step 11: LLM Configuration
+  console.log(chalk.cyan.bold('\n[11/11] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -122,6 +127,7 @@ const runMenu = async () => {
         { name: '☁️  Configure Microsoft 365 CLI', value: 'm365' },
         { name: '🔍 Configure Elasticsearch CLI (esq)', value: 'esq' },
         { name: '💬 Configure Discord CLI', value: 'discord' },
+        { name: '🎭 Configure Playwright (browser automation)', value: 'playwright' },
         { name: '🤖 Configure AI assistants (Claude Code, Gemini CLI, Codex CLI)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
@@ -161,6 +167,9 @@ const runMenu = async () => {
       break;
     case 'discord':
       await configureDiscordCli();
+      break;
+    case 'playwright':
+      await configurePlaywright();
       break;
     case 'llm':
       await configureLlmTools();
@@ -225,6 +234,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --m365       Configure Microsoft 365 CLI only
   llm-cli-setup --esq        Configure Elasticsearch CLI only
   llm-cli-setup --discord    Configure Discord CLI only
+  llm-cli-setup --playwright Configure Playwright only
   llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
@@ -250,6 +260,7 @@ ${chalk.bold('Options:')}
     m365: args.includes('--m365'),
     esq: args.includes('--esq'),
     discord: args.includes('--discord'),
+    playwright: args.includes('--playwright'),
     llm: args.includes('--llm'),
   };
 };
@@ -285,6 +296,8 @@ const main = async () => {
       await configureEsqCli();
     } else if (args.discord) {
       await configureDiscordCli();
+    } else if (args.playwright) {
+      await configurePlaywright();
     } else if (args.llm) {
       await configureLlmTools();
     } else {
