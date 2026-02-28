@@ -22,7 +22,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## Repository Overrides
 
-Some tools default to installing from `enthus-appdev/*` repositories. If you're using your own forks, set these environment variables before running setup:
+Some tools install from other `enthus-appdev` repositories by default. To use your own forks instead, set these environment variables before running setup:
 
 ```bash
 export ATL_CLI_REPO="your-org/atl-cli"           # Default: enthus-appdev/atl-cli
@@ -32,7 +32,7 @@ export DISCORD_CLI_REPO="your-org/discordctl"    # Default: enthus-appdev/discor
 export DISCORD_CLI_DIR="/path/to/discordctl"     # Default: ~/dev/discordctl
 ```
 
-> **Note**: The Go-based tools (atl, n8nctl, esq) require `go install` and access to their source repositories. discordctl is installed via `npm link` from a local clone. If these repositories are private, you'll need access or must provide your own forks via the env vars above.
+The Go-based tools (atl, n8nctl, esq) are installed via `go install`. discordctl is installed via `npm link` from a local clone.
 
 ## Quick Start
 
