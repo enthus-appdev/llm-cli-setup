@@ -22,13 +22,17 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## Repository Overrides
 
-Some Go-based tools (atl, n8nctl, esq) default to installing from `enthus-appdev/*` repositories. If you're using your own forks or public versions, set these environment variables before running setup:
+Some tools install from other `enthus-appdev` repositories by default. To use your own forks instead, set these environment variables before running setup:
 
 ```bash
-export ATL_CLI_REPO="your-org/atl-cli"       # Default: enthus-appdev/atl-cli
-export N8N_CLI_REPO="your-org/n8n-cli"       # Default: enthus-appdev/n8n-cli
-export ESQ_CLI_REPO="your-org/esq-cli"       # Default: enthus-appdev/esq-cli
+export ATL_CLI_REPO="your-org/atl-cli"           # Default: enthus-appdev/atl-cli
+export N8N_CLI_REPO="your-org/n8n-cli"           # Default: enthus-appdev/n8n-cli
+export ESQ_CLI_REPO="your-org/esq-cli"           # Default: enthus-appdev/esq-cli
+export DISCORD_CLI_REPO="your-org/discordctl"    # Default: enthus-appdev/discordctl
+export DISCORD_CLI_DIR="/path/to/discordctl"     # Default: ~/dev/discordctl
 ```
+
+The Go-based tools (atl, n8nctl, esq) are installed via `go install`. discordctl is installed via `npm link` from a local clone.
 
 ## Quick Start
 
@@ -61,6 +65,7 @@ llm-cli-setup --grafana # Configure Grafana CLI only
 llm-cli-setup --logcli  # Configure Loki CLI only
 llm-cli-setup --m365    # Configure Microsoft 365 CLI only
 llm-cli-setup --esq     # Configure Elasticsearch CLI only
+llm-cli-setup --discord # Configure Discord CLI only
 llm-cli-setup --llm     # Configure LLM tools only
 ```
 
@@ -173,6 +178,17 @@ esq search documents "query"      # Search with Lucene syntax
 esq health                        # Cluster health
 ```
 
+### Discord CLI (discordctl)
+
+Installs from [enthus-appdev/discordctl](https://github.com/enthus-appdev/discordctl) by default via `npm link` from a local clone. Override with `DISCORD_CLI_REPO` and `DISCORD_CLI_DIR` env vars if needed.
+
+```bash
+discordctl config init                    # Interactive setup
+discordctl msg list <channel>             # Read messages
+discordctl msg send <channel> "text"      # Send a message
+discordctl react add <channel> <id> 👍    # Add reaction
+```
+
 ## LLM Configuration
 
 This tool teaches your AI coding assistants how to use these CLI tools by injecting documentation into their config files.
@@ -193,7 +209,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 
 The documentation includes:
 
-- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, and esq
+- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, esq, and discordctl
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 

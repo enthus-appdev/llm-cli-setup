@@ -50,7 +50,7 @@ Each tool has its own module following the same pattern:
 - `install*()` - installation via `go install` or package manager
 - `configure*()` - interactive setup flow (install prompt, config, status display)
 
-Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `grafanactl.js`, `logcli.js`, `m365.js`, `esq.js`
+Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `grafanactl.js`, `logcli.js`, `m365.js`, `esq.js`, `discord.js`
 
 ### LLM Configuration (`lib/llm/index.js`)
 - `CLI_TOOLS_DOCS` - markdown documentation for all CLI tools (injected into LLM configs)

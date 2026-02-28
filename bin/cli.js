@@ -12,6 +12,7 @@ import { configureGrafanaCli } from '../lib/installers/grafanactl.js';
 import { configureLogcli } from '../lib/installers/logcli.js';
 import { configureM365Cli } from '../lib/installers/m365.js';
 import { configureEsqCli } from '../lib/installers/esq.js';
+import { configureDiscordCli } from '../lib/installers/discord.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
@@ -56,40 +57,44 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd
-  console.log(chalk.cyan.bold('\n[1/9] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/10] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/9] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/10] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/9] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/10] Atlassian CLI'));
   await configureAtlassianCli();
 
   // Step 4: n8n CLI
-  console.log(chalk.cyan.bold('\n[4/9] n8n CLI'));
+  console.log(chalk.cyan.bold('\n[4/10] n8n CLI'));
   await configureN8nCli();
 
   // Step 5: Grafana CLI
-  console.log(chalk.cyan.bold('\n[5/9] Grafana CLI'));
+  console.log(chalk.cyan.bold('\n[5/10] Grafana CLI'));
   await configureGrafanaCli();
 
   // Step 6: Loki CLI
-  console.log(chalk.cyan.bold('\n[6/9] Loki CLI'));
+  console.log(chalk.cyan.bold('\n[6/10] Loki CLI'));
   await configureLogcli();
 
   // Step 7: Microsoft 365 CLI
-  console.log(chalk.cyan.bold('\n[7/9] Microsoft 365 CLI'));
+  console.log(chalk.cyan.bold('\n[7/10] Microsoft 365 CLI'));
   await configureM365Cli();
 
   // Step 8: Elasticsearch Query CLI
-  console.log(chalk.cyan.bold('\n[8/9] Elasticsearch Query CLI'));
+  console.log(chalk.cyan.bold('\n[8/10] Elasticsearch Query CLI'));
   await configureEsqCli();
 
-  // Step 9: LLM Configuration
-  console.log(chalk.cyan.bold('\n[9/9] LLM Configuration'));
+  // Step 9: Discord CLI
+  console.log(chalk.cyan.bold('\n[9/10] Discord CLI'));
+  await configureDiscordCli();
+
+  // Step 10: LLM Configuration
+  console.log(chalk.cyan.bold('\n[10/10] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -116,7 +121,8 @@ const runMenu = async () => {
         { name: '📜 Configure Loki CLI (logcli)', value: 'logcli' },
         { name: '☁️  Configure Microsoft 365 CLI', value: 'm365' },
         { name: '🔍 Configure Elasticsearch CLI (esq)', value: 'esq' },
-        { name: '🤖 Configure AI assistants (Claude, Gemini, Cursor, Copilot...)', value: 'llm' },
+        { name: '💬 Configure Discord CLI', value: 'discord' },
+        { name: '🤖 Configure AI assistants (Claude Code, Gemini CLI, Codex CLI)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
       ],
@@ -152,6 +158,9 @@ const runMenu = async () => {
       break;
     case 'esq':
       await configureEsqCli();
+      break;
+    case 'discord':
+      await configureDiscordCli();
       break;
     case 'llm':
       await configureLlmTools();
@@ -215,6 +224,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --logcli     Configure Loki CLI only
   llm-cli-setup --m365       Configure Microsoft 365 CLI only
   llm-cli-setup --esq        Configure Elasticsearch CLI only
+  llm-cli-setup --discord    Configure Discord CLI only
   llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
@@ -239,6 +249,7 @@ ${chalk.bold('Options:')}
     logcli: args.includes('--logcli'),
     m365: args.includes('--m365'),
     esq: args.includes('--esq'),
+    discord: args.includes('--discord'),
     llm: args.includes('--llm'),
   };
 };
@@ -272,6 +283,8 @@ const main = async () => {
       await configureM365Cli();
     } else if (args.esq) {
       await configureEsqCli();
+    } else if (args.discord) {
+      await configureDiscordCli();
     } else if (args.llm) {
       await configureLlmTools();
     } else {
