@@ -6,31 +6,23 @@ on:
       - main
       - master
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+# Cancel old runs when new commit pushed to PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   license-check:
     runs-on: ubuntu-latest
     name: License Check
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Run license check
+        uses: enthus-appdev/actions/npm-license-validator@main
         with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Check licenses
-        run: >
-          npx license-checker-rseidelsohn
-          --failOn="${{ vars.FORBIDDEN_LICENSES || 'UNLICENSED' }}"
-          --excludePrivatePackages
-          --markdown
-          >> $GITHUB_STEP_SUMMARY
+          forbidden_licenses: ${{ vars.FORBIDDEN_LICENSES }}
