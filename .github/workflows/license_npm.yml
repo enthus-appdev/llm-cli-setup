@@ -23,6 +23,6 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run license check
-        uses: enthus-appdev/actions/npm-license-validator@main
+        uses: enthus-appdev/oss-actions/npm-license-validator@v1
         with:
           forbidden_licenses: ${{ vars.FORBIDDEN_LICENSES }}
