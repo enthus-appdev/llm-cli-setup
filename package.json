@@ -1,6 +1,6 @@
 {
   "name": "@enthus-appdev/llm-cli-setup",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "CLI tools setup with LLM integration - installs and configures sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, esq, discordctl, and playwright with Claude Code, Gemini CLI, and Codex support",
   "type": "module",
   "main": "./lib/index.js",
