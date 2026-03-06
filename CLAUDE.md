@@ -53,8 +53,10 @@ Each tool has its own module following the same pattern:
 Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `grafanactl.js`, `logcli.js`, `m365.js`, `esq.js`, `discord.js`
 
 ### LLM Configuration (`lib/llm/index.js`)
-- `CLI_TOOLS_DOCS` - markdown documentation for all CLI tools (injected into LLM configs)
-- `configureLlmTools()` - injects docs into `~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md`, `~/.codex/CODEX.md`
+- `CLI_DOCS` - per-tool documentation map (each entry has `filename`, `name`, `purpose`, `content`)
+- `writeDocFiles()` - writes individual doc files to `~/.<tool>/docs/cli-*.md`
+- `generateCliToolsBlock()` - generates slim routing table pointing to doc files
+- `configureLlmTools()` - writes doc files and injects routing table into main config
 - Uses block markers: `<!-- === CLI Tools === -->` ... `<!-- === End CLI Tools === -->`
 
 ### Utilities (`lib/utils/`)
@@ -68,7 +70,7 @@ Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `grafanactl.js`, `logcl
 1. **`lib/installers/<tool>.js`** - Create installer module (copy `n8n.js` or `esq.js` as template)
 2. **`lib/installers/index.js`** - Add exports
 3. **`lib/index.js`** - Add to top-level exports AND add entry to `CLI_TOOLS` array (status check + configure function)
-4. **`lib/llm/index.js`** - Add usage documentation to `CLI_TOOLS_DOCS` string, update tool list in description strings
+4. **`lib/llm/index.js`** - Add entry to `CLI_DOCS` map with `filename`, `name`, `purpose`, and `content`
 5. **`bin/cli.js`** - Add import, menu entry, `--flag`, switch case, full setup step (update step count!)
 
 Missing any of these (especially `lib/index.js`) will cause the tool to not appear in environment-setup.
