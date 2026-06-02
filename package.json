@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "inquirer": "^14.0.0"
+    "inquirer": "^14.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
