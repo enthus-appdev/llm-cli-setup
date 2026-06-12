@@ -110,8 +110,8 @@ Installs from [enthus-appdev/atl-cli](https://github.com/enthus-appdev/atl-cli) 
 ```bash
 atl auth setup                # First-time OAuth setup (required once)
 atl auth login                # Authenticate (opens browser)
-atl issue view PROJ-1234      # View Jira issue
-atl issue list --assignee @me # List your issues
+atl jira issue view PROJ-1234      # View Jira issue
+atl jira issue list --assignee @me # List your issues
 atl confluence page search X  # Search Confluence
 ```
 
