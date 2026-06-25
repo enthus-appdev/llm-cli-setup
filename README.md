@@ -201,7 +201,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 | ---------------- | --------------------- |
 | Claude Code      | `~/.claude/CLAUDE.md` |
 | Gemini CLI       | `~/.gemini/GEMINI.md` |
-| OpenAI Codex CLI | `~/.codex/CODEX.md`   |
+| OpenAI Codex CLI | `~/.codex/AGENTS.md`  |
 
 ### How It Works
 
