@@ -6,7 +6,7 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli, m365, esq, discordctl, playwright, hcloud
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
-3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Gemini CLI, and Codex configs
+3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Antigravity, and Codex configs
 
 | Tool           | Purpose                                                        |
 | -------------- | -------------------------------------------------------------- |
@@ -200,7 +200,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 | AI Tool          | Config Location       |
 | ---------------- | --------------------- |
 | Claude Code      | `~/.claude/CLAUDE.md` |
-| Gemini CLI       | `~/.gemini/GEMINI.md` |
+| Antigravity      | `~/.gemini/GEMINI.md` |
 | OpenAI Codex CLI | `~/.codex/AGENTS.md`  |
 
 ### How It Works

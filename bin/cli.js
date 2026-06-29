@@ -134,7 +134,7 @@ const runMenu = async () => {
         { name: '💬 Configure Discord CLI', value: 'discord' },
         { name: '🎭 Configure Playwright (browser automation)', value: 'playwright' },
         { name: '☁️  Configure Hetzner Cloud CLI (hcloud)', value: 'hcloud' },
-        { name: '🤖 Configure AI assistants (Claude Code, Gemini CLI, Codex CLI)', value: 'llm' },
+        { name: '🤖 Configure AI assistants (Claude Code, Antigravity, Codex CLI)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
       ],
