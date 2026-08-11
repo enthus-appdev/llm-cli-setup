@@ -33,7 +33,7 @@
     "url": "https://github.com/enthus-appdev/llm-cli-setup.git"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24"
   },
   "dependencies": {
     "chalk": "^5.3.0",
