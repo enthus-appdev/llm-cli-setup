@@ -4,23 +4,22 @@ A CLI tool to set up developer tools and teach your AI coding assistants how to 
 
 ## What This Does
 
-1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, grafanactl, logcli, m365, esq, discordctl, playwright, hcloud
+1. **Installs CLI tools**: sqlcmd, GitHub CLI (gh), Atlassian CLI (atl), n8nctl, gcx, m365, esq, discordctl, playwright, hcloud
 2. **Configures sqlcmd contexts**: Named contexts for switching between database environments
 3. **Teaches your AI assistants**: Injects CLI documentation into Claude Code, Antigravity, and Codex configs
 
-| Tool           | Purpose                                                        |
-| -------------- | -------------------------------------------------------------- |
-| **sqlcmd**     | Microsoft SQL Server command-line tool with context management |
-| **gh**         | GitHub CLI for PR/issue management                             |
-| **atl**        | Atlassian CLI for Jira/Confluence                              |
-| **n8nctl**     | n8n workflow automation CLI                                    |
-| **grafanactl** | Grafana CLI for dashboard/resource management                  |
-| **logcli**     | Loki CLI for querying Grafana Loki logs                        |
-| **m365**       | Microsoft 365 CLI for SharePoint/Teams/OneDrive management     |
-| **esq**        | Elasticsearch Query CLI for cross-environment cluster queries  |
-| **discordctl** | Discord CLI for REST API interactions (messages, reactions)    |
-| **playwright** | Browser automation for screenshots, PDFs, and web testing      |
-| **hcloud**     | Hetzner Cloud CLI for servers, networks, volumes, firewalls    |
+| Tool           | Purpose                                                                             |
+| -------------- | ----------------------------------------------------------------------------------- |
+| **sqlcmd**     | Microsoft SQL Server command-line tool with context management                      |
+| **gh**         | GitHub CLI for PR/issue management                                                  |
+| **atl**        | Atlassian CLI for Jira/Confluence                                                   |
+| **n8nctl**     | n8n workflow automation CLI                                                         |
+| **gcx**        | Unified Grafana Cloud CLI (dashboards, resources, metrics, logs, traces, SLOs, IRM) |
+| **m365**       | Microsoft 365 CLI for SharePoint/Teams/OneDrive management                          |
+| **esq**        | Elasticsearch Query CLI for cross-environment cluster queries                       |
+| **discordctl** | Discord CLI for REST API interactions (messages, reactions)                         |
+| **playwright** | Browser automation for screenshots, PDFs, and web testing                           |
+| **hcloud**     | Hetzner Cloud CLI for servers, networks, volumes, firewalls                         |
 
 ## Repository Overrides
 
@@ -33,6 +32,8 @@ export ESQ_CLI_REPO="your-org/esq-cli"           # Default: enthus-appdev/esq-cl
 export DISCORD_CLI_REPO="your-org/discordctl"    # Default: enthus-appdev/discordctl
 export DISCORD_CLI_DIR="/path/to/discordctl"     # Default: ~/dev/discordctl
 ```
+
+gcx installs from [grafana/gcx](https://github.com/grafana/gcx) GitHub releases by default. Override with `GCX_REPO` if needed. It is installed via a prebuilt binary download (no Go toolchain required).
 
 The Go-based tools (atl, n8nctl, esq) are installed via `go install`. discordctl is installed via `npm link` from a local clone.
 
@@ -63,8 +64,7 @@ llm-cli-setup --sql     # Configure SQL tools only
 llm-cli-setup --gh      # Configure GitHub CLI only
 llm-cli-setup --atl     # Configure Atlassian CLI only
 llm-cli-setup --n8n     # Configure n8n CLI only
-llm-cli-setup --grafana # Configure Grafana CLI only
-llm-cli-setup --logcli  # Configure Loki CLI only
+llm-cli-setup --gcx     # Configure Grafana Cloud CLI (gcx) only
 llm-cli-setup --m365    # Configure Microsoft 365 CLI only
 llm-cli-setup --esq     # Configure Elasticsearch CLI only
 llm-cli-setup --discord # Configure Discord CLI only
@@ -131,31 +131,19 @@ n8nctl variable list          # List variables
 n8nctl variable create k --value 'v'  # Create (--value avoids shell expansion)
 ```
 
-### Grafana CLI (grafanactl)
+### Grafana Cloud CLI (gcx)
 
-Requires Grafana 12+. Installs via `go install` or binary download.
-
-```bash
-grafanactl config check              # Verify configuration
-grafanactl config use-context prod   # Switch context
-grafanactl resources list            # List resource types
-grafanactl resources get dashboards  # Get all dashboards
-grafanactl resources pull dashboards -o ./dashboards/  # Backup
-grafanactl resources push ./dashboards/                # Restore
-```
-
-### Loki CLI (logcli)
-
-Installs from [grafana/loki](https://github.com/grafana/loki) GitHub releases.
+Installs the latest [gcx](https://github.com/grafana/gcx) release binary from GitHub (no Go toolchain required). gcx is the unified Grafana Cloud CLI and replaces the old `grafanactl` (Grafana) and `logcli` (Loki) CLIs.
 
 ```bash
-# Set up environment variables
-export LOKI_ADDR="<GRAFANA_URL>/api/datasources/proxy/<DATASOURCE_ID>"
-export LOKI_BEARER_TOKEN="<GRAFANA_TOKEN>"
-
-# Query logs
-logcli labels k8s_deployment_name
-logcli query '{k8s_deployment_name="myapp"}' --limit=20 --since=1h
+gcx --version                    # Show version
+gcx login prod --server <url>    # Log in (browser OAuth) & create context
+gcx config check                 # Verify configuration
+gcx config use-context prod      # Switch context
+gcx resources list-types         # List resource types
+gcx logs query '{service_name="myapp"}' --since=1h   # Query Loki logs
+gcx metrics query 'rate(http_requests_total[5m])'      # Query Prometheus
+gcx dashboards list              # List dashboards
 ```
 
 ### Microsoft 365 CLI (m365)
@@ -211,7 +199,7 @@ This tool teaches your AI coding assistants how to use these CLI tools by inject
 
 The documentation includes:
 
-- Command syntax and examples for sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, esq, discordctl, playwright, and hcloud
+- Command syntax and examples for sqlcmd, gh, atl, n8nctl, gcx, m365, esq, discordctl, playwright, and hcloud
 - Safety guidelines (e.g., confirm before SQL writes)
 - Formatting guides (Jira wiki markup, Confluence HTML)
 
@@ -237,8 +225,7 @@ llm-cli-setup/
 │   │   ├── gh.js           # GitHub CLI setup
 │   │   ├── atl.js          # Atlassian CLI setup
 │   │   ├── n8n.js          # n8n CLI setup
-│   │   ├── grafanactl.js   # Grafana CLI setup
-│   │   ├── logcli.js       # Loki CLI setup
+│   │   ├── gcx.js          # Grafana Cloud CLI setup
 │   │   ├── m365.js         # Microsoft 365 CLI setup
 │   │   ├── esq.js          # Elasticsearch Query CLI setup
 │   │   └── discord.js      # Discord CLI setup
@@ -269,9 +256,15 @@ npm start     # Run the CLI
 
 First-time users must run `atl auth setup` before `atl auth login`. This creates the OAuth app configuration.
 
-### Go binaries not in PATH
+### gcx binary not in PATH
 
-All Go-based tools (atl, n8nctl, grafanactl) install to `~/go/bin`. Add to your shell profile:
+gcx installs to `~/.local/bin`. Add to your shell profile if not already on PATH:
+
+```bash
+export PATH="$PATH:$HOME/.local/bin"
+```
+
+The Go-based tools (atl, n8nctl, esq) install to `~/go/bin`:
 
 ```bash
 export PATH="$PATH:$HOME/go/bin"
