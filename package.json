@@ -1,7 +1,7 @@
 {
   "name": "@enthus-appdev/llm-cli-setup",
-  "version": "1.11.0",
-  "description": "CLI tools setup with LLM integration - installs and configures sqlcmd, gh, atl, n8nctl, grafanactl, logcli, m365, esq, discordctl, playwright, and hcloud with Claude Code, Antigravity, and Codex support",
+  "version": "1.12.0",
+  "description": "CLI tools setup with LLM integration - installs and configures sqlcmd, gh, atl, n8nctl, gcx, m365, esq, discordctl, playwright, and hcloud with Claude Code, Antigravity, and Codex support",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
