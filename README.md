@@ -201,7 +201,7 @@ The documentation includes:
 
 - Command syntax and examples for sqlcmd, gh, atl, n8nctl, gcx, m365, esq, discordctl, playwright, and hcloud
 - Safety guidelines (e.g., confirm before SQL writes)
-- Formatting guides (Jira wiki markup, Confluence HTML)
+- Formatting guides (Jira Markdown/ADF, Confluence HTML)
 
 **Your existing configuration is safe** - only content between the CLI Tools markers is modified.
 
