@@ -14,6 +14,7 @@ import { configureEsqCli } from '../lib/installers/esq.js';
 import { configureDiscordCli } from '../lib/installers/discord.js';
 import { configurePlaywright } from '../lib/installers/playwright.js';
 import { configureHcloudCli } from '../lib/installers/hcloud.js';
+import { configureOvhcloudCli } from '../lib/installers/ovhcloud.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
 
@@ -58,48 +59,52 @@ const runFullSetup = async () => {
   console.log(chalk.gray('This will configure all CLI tools and LLM integrations.\n'));
 
   // Step 1: sqlcmd
-  console.log(chalk.cyan.bold('\n[1/11] SQL Server Tools'));
+  console.log(chalk.cyan.bold('\n[1/12] SQL Server Tools'));
   await installSqlcmd();
   await configureSqlEnv();
 
   // Step 2: GitHub CLI
-  console.log(chalk.cyan.bold('\n[2/11] GitHub CLI'));
+  console.log(chalk.cyan.bold('\n[2/12] GitHub CLI'));
   await configureGitHubCli();
 
   // Step 3: Atlassian CLI
-  console.log(chalk.cyan.bold('\n[3/11] Atlassian CLI'));
+  console.log(chalk.cyan.bold('\n[3/12] Atlassian CLI'));
   await configureAtlassianCli();
 
   // Step 4: n8n CLI
-  console.log(chalk.cyan.bold('\n[4/11] n8n CLI'));
+  console.log(chalk.cyan.bold('\n[4/12] n8n CLI'));
   await configureN8nCli();
 
   // Step 5: Grafana Cloud CLI
-  console.log(chalk.cyan.bold('\n[5/11] Grafana Cloud CLI (gcx)'));
+  console.log(chalk.cyan.bold('\n[5/12] Grafana Cloud CLI (gcx)'));
   await configureGcx();
 
   // Step 6: Microsoft 365 CLI
-  console.log(chalk.cyan.bold('\n[6/11] Microsoft 365 CLI'));
+  console.log(chalk.cyan.bold('\n[6/12] Microsoft 365 CLI'));
   await configureM365Cli();
 
   // Step 7: Elasticsearch Query CLI
-  console.log(chalk.cyan.bold('\n[7/11] Elasticsearch Query CLI'));
+  console.log(chalk.cyan.bold('\n[7/12] Elasticsearch Query CLI'));
   await configureEsqCli();
 
   // Step 8: Discord CLI
-  console.log(chalk.cyan.bold('\n[8/11] Discord CLI'));
+  console.log(chalk.cyan.bold('\n[8/12] Discord CLI'));
   await configureDiscordCli();
 
   // Step 9: Playwright
-  console.log(chalk.cyan.bold('\n[9/11] Playwright'));
+  console.log(chalk.cyan.bold('\n[9/12] Playwright'));
   await configurePlaywright();
 
   // Step 10: Hetzner Cloud CLI
-  console.log(chalk.cyan.bold('\n[10/11] Hetzner Cloud CLI'));
+  console.log(chalk.cyan.bold('\n[10/12] Hetzner Cloud CLI'));
   await configureHcloudCli();
 
-  // Step 11: LLM Configuration
-  console.log(chalk.cyan.bold('\n[11/11] LLM Configuration'));
+  // Step 11: OVHcloud CLI
+  console.log(chalk.cyan.bold('\n[11/12] OVHcloud CLI'));
+  await configureOvhcloudCli();
+
+  // Step 12: LLM Configuration
+  console.log(chalk.cyan.bold('\n[12/12] LLM Configuration'));
   await configureLlmTools();
 
   // Final summary
@@ -128,6 +133,7 @@ const runMenu = async () => {
         { name: '💬 Configure Discord CLI', value: 'discord' },
         { name: '🎭 Configure Playwright (browser automation)', value: 'playwright' },
         { name: '☁️  Configure Hetzner Cloud CLI (hcloud)', value: 'hcloud' },
+        { name: '☁️  Configure OVHcloud CLI (ovhcloud)', value: 'ovhcloud' },
         { name: '🤖 Configure AI assistants (Claude Code, Antigravity, Codex CLI)', value: 'llm' },
         new inquirer.Separator(),
         { name: '❌ Exit', value: 'exit' },
@@ -170,6 +176,9 @@ const runMenu = async () => {
       break;
     case 'hcloud':
       await configureHcloudCli();
+      break;
+    case 'ovhcloud':
+      await configureOvhcloudCli();
       break;
     case 'llm':
       await configureLlmTools();
@@ -235,6 +244,7 @@ ${chalk.bold('Usage:')}
   llm-cli-setup --discord    Configure Discord CLI only
   llm-cli-setup --playwright Configure Playwright only
   llm-cli-setup --hcloud     Configure Hetzner Cloud CLI only
+  llm-cli-setup --ovhcloud   Configure OVHcloud CLI only
   llm-cli-setup --llm        Configure LLM tools only
 
 ${chalk.bold('Options:')}
@@ -261,6 +271,7 @@ ${chalk.bold('Options:')}
     discord: args.includes('--discord'),
     playwright: args.includes('--playwright'),
     hcloud: args.includes('--hcloud'),
+    ovhcloud: args.includes('--ovhcloud'),
     llm: args.includes('--llm'),
   };
 };
@@ -298,6 +309,8 @@ const main = async () => {
       await configurePlaywright();
     } else if (args.hcloud) {
       await configureHcloudCli();
+    } else if (args.ovhcloud) {
+      await configureOvhcloudCli();
     } else if (args.llm) {
       await configureLlmTools();
     } else {
