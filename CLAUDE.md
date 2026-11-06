@@ -7,16 +7,16 @@ This file provides guidance to Claude Code when working with this repository.
 `llm-cli-setup` serves two purposes:
 
 1. **Standalone CLI** (`npm start` / `llm-cli-setup`) - interactive menu for developers to install and configure CLI tools
-2. **Library** (`import from 'llm-cli-setup'`) - consumed by `environment-setup` to provide CLI tool setup as part of the broader dev environment onboarding
+2. **Library** (`import from '@enthus-appdev/llm-cli-setup'`) - consumed by `environment-setup` to provide CLI tool setup as part of the broader dev environment onboarding
 
-## CRITICAL: Two Entry Points
+## Two Entry Points
 
-This project has **two separate entry points** that BOTH need updating when adding features:
+This project has **two separate entry points** that both need updating when adding features:
 
 | File | Purpose | Who uses it |
 |------|---------|-------------|
 | `bin/cli.js` | Standalone CLI menu, `--flags`, step counter | Developers running `npm start` or `llm-cli-setup` directly |
-| `lib/index.js` | Library exports, `configureShellEnv()`, `CLI_TOOLS` array, status display | `environment-setup` via `import { configureShellEnv } from 'llm-cli-setup'` |
+| `lib/index.js` | Library exports, `configureShellEnv()`, `CLI_TOOLS` array, status display | `environment-setup` via `import { configureShellEnv } from '@enthus-appdev/llm-cli-setup'` |
 
 **`lib/index.js` contains `configureShellEnv()`** which is what environment-setup calls. This function has its own `CLI_TOOLS` array with status checks, configure functions, and the tool selection menu. This is SEPARATE from `bin/cli.js`.
 
@@ -25,7 +25,7 @@ This project has **two separate entry points** that BOTH need updating when addi
 ```bash
 npm install     # Install dependencies
 npm start       # Run the standalone CLI
-npm link        # Link globally for testing (use in environment-setup: npm link llm-cli-setup)
+npm link        # Link globally for testing (use in environment-setup: npm link @enthus-appdev/llm-cli-setup)
 ```
 
 ## Architecture
@@ -45,7 +45,7 @@ npm link        # Link globally for testing (use in environment-setup: npm link 
 ### Installers (`lib/installers/`)
 
 Each tool has its own module following the same pattern:
-- `findBinary()` - locate installed binary (PATH + common locations)
+- `find<Tool>Binary()` - locate installed binary (PATH + common locations)
 - `is*Installed()` / `is*Configured()` - status checks
 - `install*()` - installation via `go install` or package manager
 - `configure*()` - interactive setup flow (install prompt, config, status display)
@@ -65,7 +65,7 @@ Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `gcx.js`, `m365.js`, `e
 
 ## Adding a New CLI Tool
 
-**You must update ALL of these files:**
+Update all of these files:
 
 1. **`lib/installers/<tool>.js`** - Create installer module (copy `n8n.js` or `esq.js` as template)
 2. **`lib/installers/index.js`** - Add exports
