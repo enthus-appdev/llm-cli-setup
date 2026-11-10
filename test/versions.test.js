@@ -4,6 +4,7 @@ import inquirer from 'inquirer';
 
 import {
   compareSemver,
+  displayGoVersion,
   extractVersion,
   isGoBuildOutdated,
   offerUpdate,
@@ -59,6 +60,18 @@ describe('Go build info', () => {
   test('treats local (devel) builds and missing output as unknown', () => {
     assert.equal(parseGoBuildInfo(buildInfo('(devel)')), null);
     assert.equal(parseGoBuildInfo(''), null);
+  });
+
+  test('shortens pseudo-versions for display and keeps tags', () => {
+    assert.equal(
+      displayGoVersion('v0.0.0-20251222112700-718627d35076'),
+      'commit 718627d (2025-12-22)'
+    );
+    assert.equal(
+      displayGoVersion('v1.5.1-0.20260716050216-9f8ddaa00933'),
+      'commit 9f8ddaa (2026-07-16)'
+    );
+    assert.equal(displayGoVersion('v1.13.0'), 'v1.13.0');
   });
 
   test('extracts the commit prefix of pseudo-versions', () => {
