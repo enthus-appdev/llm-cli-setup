@@ -1,13 +1,16 @@
 import assert from 'node:assert/strict';
-import { describe, test } from 'node:test';
+import { afterEach, describe, mock, test } from 'node:test';
+import inquirer from 'inquirer';
 
 import {
   compareSemver,
   extractVersion,
   isGoBuildOutdated,
+  offerUpdate,
   parseGoBuildInfo,
   pickGoLatest,
   pseudoVersionHash,
+  registerUpdatableTool,
 } from '../lib/utils/versions.js';
 
 describe('compareSemver', () => {
@@ -126,5 +129,89 @@ describe('isGoBuildOutdated', () => {
   test('cannot decide without an installed version or a pseudo-version for HEAD', () => {
     assert.equal(isGoBuildOutdated(null, { tag: 'v1.0.0' }), null);
     assert.equal(isGoBuildOutdated('v1.0.0', { head: 'abc' }), null);
+  });
+});
+
+describe('offerUpdate', () => {
+  let nextId = 0;
+  const fakeTool = (overrides = {}) => {
+    const tool = {
+      id: `fake-${nextId++}`,
+      name: 'fake',
+      isInstalled: () => true,
+      check: async () => ({ installed: '1.0.0', latest: '1.1.0', outdated: true }),
+      update: async () => true,
+      ...overrides,
+    };
+    registerUpdatableTool(tool);
+    return tool;
+  };
+  const stubPrompt = (answer) => {
+    const calls = [];
+    mock.method(inquirer, 'prompt', async (questions) => {
+      calls.push(questions[0]);
+      return { [questions[0].name]: answer };
+    });
+    return calls;
+  };
+
+  afterEach(() => mock.restoreAll());
+
+  test('outdated: prompts with default Yes, updates, then stays quiet', async () => {
+    const tool = fakeTool();
+    const calls = stubPrompt(true);
+    assert.equal(await offerUpdate(tool.id), 'updated');
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].default, true);
+    assert.equal(await offerUpdate(tool.id), 'current');
+    assert.equal(calls.length, 1);
+  });
+
+  test('declined: a re-entering caller is not prompted again', async () => {
+    let updates = 0;
+    const tool = fakeTool({ update: async () => ++updates > 0 });
+    const calls = stubPrompt(false);
+    assert.equal(await offerUpdate(tool.id), 'declined');
+    assert.equal(await offerUpdate(tool.id), 'declined');
+    assert.equal(calls.length, 1);
+    assert.equal(updates, 0);
+  });
+
+  test('failed update is reported once, without a re-prompt', async () => {
+    const tool = fakeTool({ update: async () => false });
+    const calls = stubPrompt(true);
+    assert.equal(await offerUpdate(tool.id), 'failed');
+    assert.equal(await offerUpdate(tool.id), 'failed');
+    assert.equal(calls.length, 1);
+  });
+
+  test('current tool: no prompt', async () => {
+    const tool = fakeTool({
+      check: async () => ({ installed: '1.1.0', latest: '1.1.0', outdated: false }),
+    });
+    const calls = stubPrompt(true);
+    assert.equal(await offerUpdate(tool.id), 'current');
+    assert.equal(calls.length, 0);
+  });
+
+  test('failed lookup or no update path: unknown, no prompt', async () => {
+    const calls = stubPrompt(true);
+    const throwing = fakeTool({
+      check: async () => {
+        throw new Error('offline');
+      },
+    });
+    const unsupported = fakeTool({ check: async () => null });
+    assert.equal(await offerUpdate(throwing.id), 'unknown');
+    assert.equal(await offerUpdate(unsupported.id), 'unknown');
+    assert.equal(await offerUpdate('not-registered'), 'unknown');
+    assert.equal(calls.length, 0);
+  });
+
+  test('missing tool: absent, no prompt', async () => {
+    const tool = fakeTool({ isInstalled: () => false });
+    const calls = stubPrompt(true);
+    assert.equal(await offerUpdate(tool.id), 'absent');
+    assert.equal(calls.length, 0);
   });
 });
