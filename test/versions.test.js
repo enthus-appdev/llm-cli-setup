@@ -347,6 +347,20 @@ describe('brewPackageInfo', () => {
     assert.deepEqual(result, { installed: '0.15.0', latest: '0.16.0', outdated: true });
   });
 
+  test('matches tapped casks listed under their full name', async () => {
+    const info = { casks: [{ installed: '0.15.0', version: '0.15.0' }] };
+    const outdated = {
+      formulae: [],
+      casks: [
+        { name: 'ovh/tap/ovhcloud-cli', installed_versions: ['0.15.0'], current_version: '0.16.0' },
+      ],
+    };
+    const result = await withFakeBrew(fakeBrew(info, outdated), () =>
+      brewPackageInfo('ovh/tap/ovhcloud-cli', { cask: true })
+    );
+    assert.equal(result.outdated, true);
+  });
+
   test('throws when the outdated lookup fails, so the check is reported as skipped', async () => {
     await assert.rejects(withFakeBrew(fakeBrew(gcxInfo, 'exit 1'), () => brewPackageInfo('gcx')));
   });
