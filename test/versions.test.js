@@ -361,6 +361,22 @@ describe('brewPackageInfo', () => {
     assert.equal(result.outdated, true);
   });
 
+  test('reads tapped formulae listed under their full name', async () => {
+    const outdated = {
+      formulae: [
+        {
+          name: 'grafana/grafana/gcx',
+          installed_versions: ['1.3.1'],
+          current_version: '1.7.1',
+          pinned: false,
+        },
+      ],
+      casks: [],
+    };
+    const result = await withFakeBrew(fakeBrew(gcxInfo, outdated), () => brewPackageInfo('gcx'));
+    assert.deepEqual(result, { installed: '1.3.1', latest: '1.7.1', outdated: true });
+  });
+
   test('throws when the outdated lookup fails, so the check is reported as skipped', async () => {
     await assert.rejects(withFakeBrew(fakeBrew(gcxInfo, 'exit 1'), () => brewPackageInfo('gcx')));
   });
