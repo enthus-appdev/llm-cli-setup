@@ -263,26 +263,92 @@ describe('brewPackageInfo', () => {
       fs.rmSync(dir, { recursive: true, force: true });
     }
   };
+  // Fake brew answering `brew info` with INFO and `brew outdated` with OUTDATED.
+  const fakeBrew = (info, outdated) =>
+    `case "$1" in info) echo '${JSON.stringify(info)}' ;; outdated) ${
+      typeof outdated === 'string' ? outdated : `echo '${JSON.stringify(outdated)}'`
+    } ;; esac`;
+  const gcxInfo = {
+    formulae: [{ installed: [{ version: '1.3.1_1' }], versions: { stable: '1.3.1' } }],
+  };
 
-  test('returns null when brew prints malformed JSON', async () => {
+  test('returns null when brew prints malformed JSON or fails', async () => {
     assert.equal(await withFakeBrew("echo 'not json'", () => brewPackageInfo('gcx')), null);
-  });
-
-  test('returns null when brew fails', async () => {
     assert.equal(await withFakeBrew('exit 1', () => brewPackageInfo('gcx')), null);
   });
 
-  test('reads installed, stable and outdated for a formula', async () => {
-    const json = JSON.stringify({
+  test('returns null when brew does not manage the package', async () => {
+    const info = { formulae: [{ installed: [], versions: { stable: '1.7.1' } }] };
+    assert.equal(await withFakeBrew(fakeBrew(info, 'exit 1'), () => brewPackageInfo('gcx')), null);
+  });
+
+  test('trusts brew outdated over stale brew info metadata', async () => {
+    // brew info's cached stable (1.3.1) says current; brew outdated refreshed and knows 1.7.1.
+    const outdated = {
       formulae: [
-        { installed: [{ version: '1.3.1_1' }], versions: { stable: '1.7.1' }, outdated: true },
+        { name: 'gcx', installed_versions: ['1.3.1'], current_version: '1.7.1', pinned: false },
       ],
-    });
-    assert.deepEqual(await withFakeBrew(`echo '${json}'`, () => brewPackageInfo('gcx')), {
-      installed: '1.3.1',
-      latest: '1.7.1',
-      outdated: true,
-    });
+      casks: [],
+    };
+    assert.deepEqual(
+      await withFakeBrew(fakeBrew(gcxInfo, outdated), () => brewPackageInfo('gcx')),
+      {
+        installed: '1.3.1',
+        latest: '1.7.1',
+        outdated: true,
+      }
+    );
+  });
+
+  test('reads the listing when brew outdated exits 1, as it does whenever something is outdated', async () => {
+    const outdated = {
+      formulae: [
+        { name: 'gcx', installed_versions: ['1.3.1'], current_version: '1.7.1', pinned: false },
+      ],
+      casks: [],
+    };
+    const script = fakeBrew(gcxInfo, `echo '${JSON.stringify(outdated)}'; exit 1`);
+    const result = await withFakeBrew(script, () => brewPackageInfo('gcx'));
+    assert.equal(result.outdated, true);
+  });
+
+  test('reports current when brew outdated lists nothing', async () => {
+    const outdated = { formulae: [], casks: [] };
+    assert.deepEqual(
+      await withFakeBrew(fakeBrew(gcxInfo, outdated), () => brewPackageInfo('gcx')),
+      {
+        installed: '1.3.1',
+        latest: '1.3.1',
+        outdated: false,
+      }
+    );
+  });
+
+  test('treats pinned packages as current, since brew upgrade skips them', async () => {
+    const outdated = {
+      formulae: [
+        { name: 'gcx', installed_versions: ['1.3.1'], current_version: '1.7.1', pinned: true },
+      ],
+      casks: [],
+    };
+    const result = await withFakeBrew(fakeBrew(gcxInfo, outdated), () => brewPackageInfo('gcx'));
+    assert.equal(result.outdated, false);
+  });
+
+  test('matches tapped casks by token', async () => {
+    const info = { casks: [{ installed: '0.15.0', version: '0.15.0' }] };
+    const outdated = {
+      formulae: [],
+      casks: [{ name: 'ovhcloud-cli', installed_versions: ['0.15.0'], current_version: '0.16.0' }],
+    };
+    const result = await withFakeBrew(fakeBrew(info, outdated), () =>
+      brewPackageInfo('ovh/tap/ovhcloud-cli', { cask: true })
+    );
+    assert.deepEqual(result, { installed: '0.15.0', latest: '0.16.0', outdated: true });
+  });
+
+  test('throws when the outdated lookup fails, so the check is reported as skipped', async () => {
+    await assert.rejects(withFakeBrew(fakeBrew(gcxInfo, 'exit 1'), () => brewPackageInfo('gcx')));
   });
 });
 
