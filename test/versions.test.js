@@ -16,6 +16,7 @@ import {
   pickGoLatest,
   pseudoVersionHash,
   registerUpdatableTool,
+  releaseCheckResult,
 } from '../lib/utils/versions.js';
 
 describe('compareSemver', () => {
@@ -282,5 +283,20 @@ describe('brewPackageInfo', () => {
       latest: '1.7.1',
       outdated: true,
     });
+  });
+});
+
+describe('releaseCheckResult', () => {
+  test('flags a lower installed release as outdated', () => {
+    assert.deepEqual(releaseCheckResult('1.3.1', 'v1.7.1'), {
+      installed: '1.3.1',
+      latest: 'v1.7.1',
+      outdated: true,
+    });
+    assert.equal(releaseCheckResult('1.7.1', 'v1.7.1').outdated, false);
+  });
+
+  test('throws instead of reporting non-semver versions as current', () => {
+    assert.throws(() => releaseCheckResult('nightly', 'v1.7.1'), /cannot compare/);
   });
 });
