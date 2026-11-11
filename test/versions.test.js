@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, mock, test } from 'node:test';
 import inquirer from 'inquirer';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 import {
+  brewPackageInfo,
   compareSemver,
   displayGoVersion,
   extractVersion,
@@ -226,5 +230,41 @@ describe('offerUpdate', () => {
     const calls = stubPrompt(true);
     assert.equal(await offerUpdate(tool.id), 'absent');
     assert.equal(calls.length, 0);
+  });
+});
+
+describe('brewPackageInfo', () => {
+  const withFakeBrew = async (script, fn) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fake-brew-'));
+    fs.writeFileSync(path.join(dir, 'brew'), `#!/bin/sh\n${script}\n`, { mode: 0o755 });
+    const originalPath = process.env.PATH;
+    process.env.PATH = `${dir}${path.delimiter}${originalPath}`;
+    try {
+      return await fn();
+    } finally {
+      process.env.PATH = originalPath;
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  };
+
+  test('returns null when brew prints malformed JSON', async () => {
+    assert.equal(await withFakeBrew("echo 'not json'", () => brewPackageInfo('gcx')), null);
+  });
+
+  test('returns null when brew fails', async () => {
+    assert.equal(await withFakeBrew('exit 1', () => brewPackageInfo('gcx')), null);
+  });
+
+  test('reads installed, stable and outdated for a formula', async () => {
+    const json = JSON.stringify({
+      formulae: [
+        { installed: [{ version: '1.3.1_1' }], versions: { stable: '1.7.1' }, outdated: true },
+      ],
+    });
+    assert.deepEqual(await withFakeBrew(`echo '${json}'`, () => brewPackageInfo('gcx')), {
+      installed: '1.3.1',
+      latest: '1.7.1',
+      outdated: true,
+    });
   });
 });
