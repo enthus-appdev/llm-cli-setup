@@ -175,7 +175,14 @@ describe('offerUpdate', () => {
   afterEach(() => mock.restoreAll());
 
   test('outdated: prompts with default Yes, updates, then stays quiet', async () => {
-    const tool = fakeTool();
+    let version = '1.0.0';
+    const tool = fakeTool({
+      check: async () => ({ installed: version, latest: '1.1.0', outdated: version !== '1.1.0' }),
+      update: async () => {
+        version = '1.1.0';
+        return true;
+      },
+    });
     const calls = stubPrompt(true);
     assert.equal(await offerUpdate(tool.id), 'updated');
     assert.equal(calls.length, 1);
@@ -192,6 +199,15 @@ describe('offerUpdate', () => {
     assert.equal(await offerUpdate(tool.id), 'declined');
     assert.equal(calls.length, 1);
     assert.equal(updates, 0);
+  });
+
+  test('an update that leaves the checked binary outdated is reported as failed', async () => {
+    const tool = fakeTool({ update: async () => true });
+    stubPrompt(true);
+    const logs = [];
+    mock.method(console, 'log', (...args) => logs.push(args.join(' ')));
+    assert.equal(await offerUpdate(tool.id), 'failed');
+    assert.match(logs.join('\n'), /still reports 1\.0\.0 after the update/);
   });
 
   test('failed update is reported once, without a re-prompt', async () => {
