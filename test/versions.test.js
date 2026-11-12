@@ -11,6 +11,7 @@ import {
   displayGoVersion,
   extractVersion,
   isGoBuildOutdated,
+  latestGithubRelease,
   offerUpdate,
   parseGoBuildInfo,
   pickGoLatest,
@@ -247,6 +248,34 @@ describe('offerUpdate', () => {
     const calls = stubPrompt(true);
     assert.equal(await offerUpdate(tool.id), 'absent');
     assert.equal(calls.length, 0);
+  });
+
+  test('checks lazily and warns once about a failed lookup', async () => {
+    const logs = [];
+    mock.method(console, 'log', (...args) => logs.push(args.join(' ')));
+    const tool = fakeTool({
+      name: 'lazy',
+      check: async () => {
+        throw new Error('offline');
+      },
+    });
+    assert.equal(await offerUpdate(tool.id), 'unknown');
+    assert.equal(await offerUpdate(tool.id), 'unknown');
+    const text = logs.join('\n');
+    assert.match(text, /Checking lazy for updates/);
+    assert.equal(text.match(/Skipped update check for lazy/g)?.length, 1);
+  });
+});
+
+describe('latestGithubRelease', () => {
+  afterEach(() => mock.restoreAll());
+
+  test('returns the release version without a leading v', async () => {
+    mock.method(globalThis, 'fetch', async () => ({
+      ok: true,
+      json: async () => ({ tag_name: 'v1.7.1' }),
+    }));
+    assert.equal(await latestGithubRelease('grafana/gcx'), '1.7.1');
   });
 });
 

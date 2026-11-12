@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, mock, test } from 'node:test';
 
-import { checkForUpdates, registerUpdatableTool } from '../lib/utils/versions.js';
+import { checkForUpdates, offerUpdate, registerUpdatableTool } from '../lib/utils/versions.js';
 
 // Runs in its own process (node --test isolates files), so the registry holds
 // only the tools registered here.
@@ -45,5 +45,13 @@ describe('checkForUpdates', () => {
     assert.equal(results.offline.state, 'unknown');
     assert.equal(results.unmanaged.state, 'unknown');
     assert.equal(results.missing.state, 'absent');
+  });
+
+  test('offerUpdate reuses those results without checking or warning again', async () => {
+    const lines = [];
+    mock.method(console, 'log', (...args) => lines.push(args.join(' ')));
+    assert.equal(await offerUpdate('offline'), 'unknown');
+    assert.equal(await offerUpdate('missing'), 'absent');
+    assert.deepEqual(lines, []);
   });
 });

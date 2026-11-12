@@ -285,8 +285,11 @@ const main = async () => {
 
   const args = parseArgs();
 
+  // Single-tool flags check only their own tool, when it is configured.
+  const runsAllTools = !Object.values(args).some(Boolean) || args.full;
+
   try {
-    await checkForUpdates();
+    if (runsAllTools) await checkForUpdates();
 
     if (args.full) {
       await runFullSetup();
