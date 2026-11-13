@@ -17,6 +17,7 @@ import { configureHcloudCli } from '../lib/installers/hcloud.js';
 import { configureOvhcloudCli } from '../lib/installers/ovhcloud.js';
 import { configureLlmTools } from '../lib/llm/index.js';
 import { getShellProfile } from '../lib/utils/shell.js';
+import { checkForUpdates } from '../lib/utils/versions.js';
 
 const require = createRequire(import.meta.url);
 const { version: VERSION } = require('../package.json');
@@ -284,7 +285,12 @@ const main = async () => {
 
   const args = parseArgs();
 
+  // Single-tool flags check only their own tool, when it is configured.
+  const runsAllTools = !Object.values(args).some(Boolean) || args.full;
+
   try {
+    if (runsAllTools) await checkForUpdates();
+
     if (args.full) {
       await runFullSetup();
     } else if (args.sql) {

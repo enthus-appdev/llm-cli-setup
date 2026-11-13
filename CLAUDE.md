@@ -62,12 +62,14 @@ Current tools: `sqlcmd.js`, `gh.js`, `atl.js`, `n8n.js`, `gcx.js`, `m365.js`, `e
 ### Utilities (`lib/utils/`)
 - `platform.js` - package manager detection, command execution
 - `shell.js` - shell profile detection, block marker operations, file utilities
+- `versions.js` - update checks: version comparison, latest-version lookups (git tags, Homebrew, npm, GitHub releases), the per-run result cache, and the default-Yes update prompt
 
 ## Adding a New CLI Tool
 
 Update all of these files:
 
 1. **`lib/installers/<tool>.js`** - Create installer module (copy `n8n.js` or `esq.js` as template)
+   - Register it with `registerUpdatableTool()` from `lib/utils/versions.js` (id = its `CLI_TOOLS` id) and call `offerUpdate(id)` after the "is installed" check, so setup flags and updates outdated installs
 2. **`lib/installers/index.js`** - Add exports
 3. **`lib/index.js`** - Add to top-level exports AND add entry to `CLI_TOOLS` array (status check + configure function)
 4. **`lib/llm/index.js`** - Add entry to `CLI_DOCS` map with `filename`, `name`, `purpose`, and `content`
